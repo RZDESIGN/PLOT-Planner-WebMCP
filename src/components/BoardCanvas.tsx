@@ -9,6 +9,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type WheelEvent as ReactWheelEvent,
 } from 'react'
+import { createPortal } from 'react-dom'
 import {
   closestCorners,
   defaultDropAnimationSideEffects,
@@ -98,8 +99,8 @@ interface CardProps {
 const MIN_ZOOM = 0.2
 const MAX_ZOOM = 1.35
 const PROPOSAL_STAGGER_MS = 240
-const STICKY_WIDTH = 184
-const STICKY_HEIGHT = 132
+const STICKY_WIDTH = 200
+const STICKY_HEIGHT = 160
 
 const collisionDetectionStrategy: CollisionDetection = (args) => {
   const pointerCollisions = pointerWithin(args)
@@ -607,7 +608,11 @@ export function BoardCanvas({
     // On phones a literal full-canvas fit makes cards unreadably small. Keep a
     // useful overview scale and let the infinite canvas expose the outer notes
     // through the same one-finger pan interaction.
-    const nextZoom = clampZoom(isNarrowViewport ? Math.max(0.38, fittedZoom) : fittedZoom)
+    const nextZoom = clampZoom(
+      isNarrowViewport
+        ? Math.max(0.62, fittedZoom)
+        : Math.max(0.8, fittedZoom),
+    )
     const nextTransform = {
       x: Math.round((canvas.clientWidth - contentWidth * nextZoom) / 2 - minX * nextZoom),
       y: Math.round((canvas.clientHeight - contentHeight * nextZoom) / 2 - minY * nextZoom + 18),
@@ -991,9 +996,31 @@ export function BoardCanvas({
                 )
               })}
             </div>
-            <DragOverlay dropAnimation={CARD_DROP_ANIMATION}>
-              {activeCard ? <CardContent card={activeCard} snapshot={snapshot} isOverlay dragVelocity={dragVelocity} /> : null}
-            </DragOverlay>
+            {typeof document !== 'undefined'
+              ? createPortal(
+                  <DragOverlay
+                    className={`drag-overlay-root${canvasTransform.zoom < 0.96 ? ' is-compact' : ''}`}
+                    dropAnimation={CARD_DROP_ANIMATION}
+                  >
+                    {activeCard
+                      ? (
+                          <div
+                            className="drag-overlay-scale"
+                            style={{ '--drag-overlay-zoom': canvasTransform.zoom } as CSSProperties}
+                          >
+                            <CardContent
+                              card={activeCard}
+                              snapshot={snapshot}
+                              isOverlay
+                              dragVelocity={dragVelocity}
+                            />
+                          </div>
+                        )
+                      : null}
+                  </DragOverlay>,
+                  document.body,
+                )
+              : null}
           </DndContext>
         </section>
       </div>

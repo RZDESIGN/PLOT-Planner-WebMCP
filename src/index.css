@@ -22,6 +22,12 @@
   --red: #ef6375;
   --panel: #ffffff;
   --panel-soft: #f6f7f9;
+  --text-micro: 12px;
+  --text-caption: 13px;
+  --text-small: 14px;
+  --text-body: 15px;
+  --text-ui: 16px;
+  --text-title: 17px;
   --motion-fast: 160ms;
   --motion-medium: 320ms;
   --motion-slow: 560ms;
