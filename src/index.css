@@ -1,0 +1,91 @@
+:root {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #202124;
+  background: #f8f9fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --ink: #202124;
+  --muted: #62666d;
+  --soft-muted: #969ba3;
+  --canvas: #f8f9fb;
+  --surface: #ffffff;
+  --white: #ffffff;
+  --line: #e5e7eb;
+  --line-dark: #d6d9df;
+  --lime: #c8f36a;
+  --pink: #ffb7c6;
+  --blue: #a9d3ff;
+  --amber: #ffe57f;
+  --violet: #d3c5ff;
+  --red: #ef6375;
+  --panel: #ffffff;
+  --panel-soft: #f6f7f9;
+  --motion-fast: 160ms;
+  --motion-medium: 320ms;
+  --motion-slow: 560ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring-soft: cubic-bezier(0.2, 0.9, 0.24, 1.08);
+  view-transition-name: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--canvas);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  color: inherit;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  color: #202124;
+  background: var(--lime);
+}
+
+:focus-visible {
+  outline: 3px solid rgba(91, 112, 230, 0.3);
+  outline-offset: 2px;
+}
+
+#root {
+  min-height: 100vh;
+}
