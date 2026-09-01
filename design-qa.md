@@ -27,7 +27,7 @@
 | Color | Neutral grid and chrome with restrained pastel work blocks matching the reference's category language. | Pass |
 | Images and icons | Real PLOT favicon asset and consistent Lucide icons; no decorative raster asset was needed for the product surface. | Pass |
 | Copy | Board context is concise at fit view; card descriptions and labels return at 100% semantic zoom so no information is lost. | Pass |
-| Responsive behavior | Mobile opens at a readable 38% planning overview with horizontal pan for the outer canvas, retains zoom controls, and presents Sidekick as a full sheet. | Pass |
+| Responsive behavior | Mobile opens on the active `Now` column at a readable 78%, adds persistent sprint/goal/capacity context plus direct Inbox/Now/Next/Later navigation, keeps share and sticky actions visible, and presents Sidekick as a full sheet. | Pass |
 | Collaboration | Isolated owner and viewer sessions showed both Presence avatars; the viewer received a newly created card without refresh while every mutation control remained disabled. | Pass |
 | Interaction | Pan, fit, anchored zoom, scaled drag-and-drop, add-card, add/edit sticky, bidirectional card conversion, proposal preview/apply, and save/auth were exercised in Playwright. | Pass |
 | Loose-note language | Slight rotation, compact note chrome, restrained five-color palette, and spatial separation distinguish uncommitted thinking from structured cards without adding a second white surface. | Pass |
@@ -59,6 +59,20 @@
 - P1: Card movement did not yet preserve the physical continuity visible in the supplied motion references. Added velocity tilt/stretch, lift, animated layout reflow, drop overshoot, sequential agent View Transitions, and shorter proposal staging.
 - P2: Card descriptions and labels popped at the semantic-zoom breakpoint. Replaced display toggles with height, opacity, and translate transitions while keeping reduced-motion behavior immediate.
 - P3: Desktop Sidekick overlays the far-right canvas while open. This is intentional, temporary, and fully reversible with the close control.
+- P1: A visible proposal could not be dismissed because the generic write guard also blocked proposal resolution. Dismissal now has a role-specific guard and `Keep current board` was verified end to end.
+- P1: Mobile opened on an under-scaled, context-free part of the infinite canvas. It now starts on `Now`, exposes direct column focus controls, and keeps sprint goal and capacity visible above the canvas.
+- P2: Sidekick's planning action was below the fold and duplicated in Quick actions. The single primary action now sits directly below the focus score with explicit review-before-change copy.
+- P2: Guest mode and the mobile share action were too easy to miss. Desktop now shows a Demo badge, Save explains its sign-in requirement, and Share remains available on mobile so the route to collaboration stays discoverable.
+- P2: Magic-link guidance appeared too late. The authentication dialog now says up front that the email link must be opened in the same browser.
+
+## September 1, 2026 audit evidence
+
+- Full before/after evidence: `output/ux-audit/`
+- Desktop core flow: board → Sidekick analysis → proposal preview → keep current board
+- Mobile core flow: sprint context → direct column focus → Sidekick planning CTA
+- Entry flows: authentication, sprint switcher, share entry, and add-card dialog
+- Automated checks: `npm run check`, clean browser console, and `git diff --check`
+- Evidence limit: owner/editor/viewer collaboration states were covered in the earlier isolated-session QA above; this pass concentrated on anonymous first-use and responsive usability.
 
 ## Final result
 

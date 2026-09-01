@@ -99,6 +99,9 @@ function App() {
           onNewSprint={() => board.session?.user ? setNewSprintOpen(true) : setAuthOpen(true)}
         />
         <div className="topbar-actions">
+          {!board.session?.user && (
+            <span className="demo-mode-badge" title="Public demo · sign in to save changes">Demo</span>
+          )}
           <div
             className={`sync-state state-${board.connection}`}
             aria-label={board.connection === 'live' ? 'Live sync' : board.connection === 'connecting' ? 'Connecting' : 'Local only'}
@@ -139,7 +142,7 @@ function App() {
               <strong>{board.session.user.email?.split('@')[0]}</strong>
             </button>
           ) : (
-            <button className="save-button" type="button" aria-label="Save board" onClick={() => setAuthOpen(true)}>
+            <button className="save-button" type="button" aria-label="Save board" title="Sign in to save and share" onClick={() => setAuthOpen(true)}>
               <Lock size={14} /> <span>Save</span>
             </button>
           )}

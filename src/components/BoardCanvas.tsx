@@ -535,6 +535,9 @@ export function BoardCanvas({
   const [dragVelocity, setDragVelocity] = useState({ x: 0, y: 0 })
   const [isPanning, setIsPanning] = useState(false)
   const [spacePressed, setSpacePressed] = useState(false)
+  const [selectedMobileColumnId, setSelectedMobileColumnId] = useState(
+    () => snapshot.columns.find((column) => column.client_key === 'now')?.id || snapshot.columns[0]?.id || '',
+  )
   const {
     transform: canvasTransform,
     mode: canvasMotionMode,
@@ -568,6 +571,14 @@ export function BoardCanvas({
   const activeSticky = activeId?.startsWith('sticky:')
     ? snapshot.stickyNotes.find((note) => note.id === activeId.slice('sticky:'.length))
     : null
+  const defaultMobileColumnId =
+    snapshot.columns.find((column) => column.client_key === 'now')?.id || snapshot.columns[0]?.id || ''
+  const activeMobileColumnId = snapshot.columns.some((column) => column.id === selectedMobileColumnId)
+    ? selectedMobileColumnId
+    : defaultMobileColumnId
+  const plannedPoints = snapshot.cards
+    .filter((card) => snapshot.columns.find((column) => column.id === card.column_id)?.client_key === 'now')
+    .reduce((sum, card) => sum + card.estimate, 0)
   const leavingCardIds = new Set(
     proposal?.actions
       .filter((action) => {
@@ -605,14 +616,32 @@ export function BoardCanvas({
       (canvas.clientHeight - verticalPadding) / contentHeight,
       0.9,
     )
-    // On phones a literal full-canvas fit makes cards unreadably small. Keep a
-    // useful overview scale and let the infinite canvas expose the outer notes
-    // through the same one-finger pan interaction.
-    const nextZoom = clampZoom(
-      isNarrowViewport
-        ? Math.max(0.62, fittedZoom)
-        : Math.max(0.8, fittedZoom),
-    )
+    if (isNarrowViewport) {
+      const defaultColumnIndex = Math.max(
+        0,
+        snapshot.columns.findIndex((column) => column.client_key === 'now'),
+      )
+      const nextZoom = 0.78
+      const columnWidth = boardSurface.offsetWidth / Math.max(1, snapshot.columns.length)
+      const nextTransform = {
+        x: Math.round(12 - defaultColumnIndex * columnWidth * nextZoom),
+        y: 170,
+        zoom: nextZoom,
+      }
+      if (animate) {
+        animateCanvasTo(nextTransform, {
+          stiffness: 190,
+          damping: 24,
+          maxDuration: 920,
+          mode: 'settling',
+        })
+      } else {
+        setCanvasImmediate(nextTransform, 'idle')
+      }
+      return
+    }
+
+    const nextZoom = clampZoom(Math.max(0.8, fittedZoom))
     const nextTransform = {
       x: Math.round((canvas.clientWidth - contentWidth * nextZoom) / 2 - minX * nextZoom),
       y: Math.round((canvas.clientHeight - contentHeight * nextZoom) / 2 - minY * nextZoom + 18),
@@ -628,7 +657,29 @@ export function BoardCanvas({
     } else {
       setCanvasImmediate(nextTransform, 'idle')
     }
-  }, [animateCanvasTo, setCanvasImmediate, snapshot.stickyNotes])
+  }, [animateCanvasTo, setCanvasImmediate, snapshot.columns, snapshot.stickyNotes])
+
+  const focusMobileColumn = useCallback((columnId: string) => {
+    const boardSurface = boardSurfaceRef.current
+    const columnIndex = snapshot.columns.findIndex((column) => column.id === columnId)
+    if (!boardSurface || columnIndex < 0) return
+    const nextZoom = 0.78
+    const columnWidth = boardSurface.offsetWidth / Math.max(1, snapshot.columns.length)
+    setSelectedMobileColumnId(columnId)
+    animateCanvasTo(
+      {
+        x: Math.round(12 - columnIndex * columnWidth * nextZoom),
+        y: 170,
+        zoom: nextZoom,
+      },
+      {
+        stiffness: 220,
+        damping: 26,
+        maxDuration: 760,
+        mode: 'settling',
+      },
+    )
+  }, [animateCanvasTo, snapshot.columns])
 
   useLayoutEffect(() => {
     if (fittedBoardIdRef.current === snapshot.board.id) return
@@ -938,7 +989,7 @@ export function BoardCanvas({
                 <span>Sprint goal</span>
                 <strong>{snapshot.board.sprint_goal}</strong>
               </div>
-              <b>{snapshot.cards.filter((card) => snapshot.columns.find((column) => column.id === card.column_id)?.client_key === 'now').reduce((sum, card) => sum + card.estimate, 0)}<small>/{snapshot.board.capacity}</small></b>
+              <b>{plannedPoints}<small>/{snapshot.board.capacity}</small></b>
             </div>
           </header>
           <CriticalPath snapshot={snapshot} />
@@ -1024,6 +1075,31 @@ export function BoardCanvas({
           </DndContext>
         </section>
       </div>
+
+      <section className="mobile-board-context" aria-label="Mobile board navigation">
+        <div className="mobile-board-context__summary">
+          <div>
+            <span>Active sprint</span>
+            <strong>{snapshot.board.title}</strong>
+          </div>
+          <b>{plannedPoints}<small>/{snapshot.board.capacity} pts</small></b>
+        </div>
+        <p><Goal size={13} /> {snapshot.board.sprint_goal}</p>
+        <div className="mobile-column-nav" role="toolbar" aria-label="Focus a sprint column">
+          {snapshot.columns.map((column) => (
+            <button
+              key={column.id}
+              type="button"
+              className={column.id === activeMobileColumnId ? 'is-active' : ''}
+              aria-pressed={column.id === activeMobileColumnId}
+              onClick={() => focusMobileColumn(column.id)}
+            >
+              <span style={{ background: column.accent }} />
+              {column.title}
+            </button>
+          ))}
+        </div>
+      </section>
 
       <div className="canvas-controls" aria-label="Canvas controls">
         <button type="button" aria-label="Zoom out" title="Zoom out" onClick={() => zoomAt(getCanvasTarget().zoom - 0.1)}>

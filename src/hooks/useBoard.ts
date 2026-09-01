@@ -1077,7 +1077,9 @@ export function useBoard() {
 
   const dismissProposal = useCallback(
     async (proposalId?: string) => {
-      assertBoardWritable()
+      if (accessRoleRef.current === 'viewer') {
+        throw new Error('This sprint is in live view mode. Only an editor can resolve proposals.')
+      }
       const currentProposal = proposalRef.current
       if (!currentProposal || (proposalId && currentProposal.id !== proposalId)) {
         throw new Error('There is no matching draft proposal to dismiss.')
@@ -1088,7 +1090,7 @@ export function useBoard() {
       commitProposal(null)
       return currentProposal
     },
-    [assertBoardWritable, commitProposal, session],
+    [commitProposal, session],
   )
 
   const selectSprint = useCallback(

@@ -69,7 +69,7 @@ export function AuthDialog({ open, onClose, onSendLink }: AuthDialogProps) {
           <>
             <p className="dialog-eyebrow">Save your PLOT</p>
             <h2 id={titleId}>Turn this demo into your workspace.</h2>
-            <p>Sign in without a password. Your canvas becomes a private realtime sprint you can share as edit access or live view.</p>
+            <p>Sign in without a password. Your canvas becomes a private realtime sprint you can share as edit access or live view. Open the email link in this browser.</p>
             <form onSubmit={submit}>
               <label htmlFor="auth-email">Work email</label>
               <div className="input-with-icon">

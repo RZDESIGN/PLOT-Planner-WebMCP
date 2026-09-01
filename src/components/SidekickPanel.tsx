@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Bot,
   Check,
-  Clipboard,
   Copy,
   Lightbulb,
   ShieldCheck,
@@ -166,7 +165,7 @@ export function SidekickPanel({
                   <Check size={16} /> {working ? 'Applying…' : 'Accept all'}
                 </button>
                 <button className="secondary-button" type="button" disabled={working || readOnly} onClick={() => void run(onDismiss)}>
-                  Dismiss
+                  Keep current board
                 </button>
               </div>
               <div className="human-control-note"><ShieldCheck size={14} /> Nothing changes until you accept.</div>
@@ -181,6 +180,20 @@ export function SidekickPanel({
                 <div className="focus-meter"><span style={{ width: `${analysis.focusScore}%` }} /></div>
                 <p>{analysis.plannedPoints} of {analysis.capacity} points are currently in Now.</p>
               </section>
+
+              <button
+                className="sidekick-plan-cta"
+                type="button"
+                disabled={working || readOnly}
+                onClick={() => void run(onPropose)}
+              >
+                <Sparkles size={15} />
+                <span>
+                  <strong>{readOnly ? 'Live view only' : working ? 'Building proposal…' : 'Preview an improved plan'}</strong>
+                  <small>Review every move before anything changes</small>
+                </span>
+                <ArrowRight size={15} />
+              </button>
 
               <section className="sidekick-section">
                 <div className="section-heading">
@@ -217,15 +230,6 @@ export function SidekickPanel({
                 </div>
               </section>
 
-              <section className="quick-actions">
-                <div className="section-heading"><span>Quick actions</span><small>Suggest</small></div>
-                <button type="button" disabled={working || readOnly} onClick={() => void run(onPropose)}>
-                  <Clipboard size={15} /> Plan the sprint <ArrowRight size={14} />
-                </button>
-                <button type="button" onClick={() => setTab('activity')}>
-                  <Activity size={15} /> Review recent decisions <ArrowRight size={14} />
-                </button>
-              </section>
             </>
           )}
         </div>
