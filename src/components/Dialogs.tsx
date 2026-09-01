@@ -62,7 +62,7 @@ export function AuthDialog({ open, onClose, onSendLink }: AuthDialogProps) {
             <span><Check size={24} /></span>
             <p className="dialog-eyebrow">Magic link sent</p>
             <h2 id={titleId}>Check your inbox</h2>
-            <p>We sent a secure sign-in link to <strong>{email}</strong>. When you return, PLOT will open your workspace or accept the collaboration invite in this URL.</p>
+            <p>We sent a secure sign-in link to <strong>{email}</strong>. Open it in this browser; PLOT will restore your session after refresh and return to this board or invitation.</p>
             <button className="primary-button" type="button" onClick={onClose}>Keep exploring the demo</button>
           </div>
         ) : (

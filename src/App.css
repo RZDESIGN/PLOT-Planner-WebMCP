@@ -905,6 +905,15 @@
 
 .share-dialog { width: min(520px, 100%); }
 .share-dialog__mark { color: #5d548b; background: #ebe7fb; }
+.share-permalink { width: 100%; margin-top: 16px; padding: 9px; color: #58647f; border: 1px solid #d7dce9; border-radius: 10px; background: #f5f6fa; }
+.share-permalink > label { display: block; margin: 0 0 6px 2px; font-size: var(--text-micro); font-weight: 720; }
+.share-permalink > div { display: flex; align-items: center; gap: 5px; }
+.share-permalink input { min-width: 0; height: 34px; flex: 1; margin: 0; padding: 0 9px; color: #50596e; border: 1px solid #d8dce6; border-radius: 7px; background: rgba(255,255,255,.84); font-family: var(--font-mono); font-size: var(--text-micro); }
+.share-permalink button { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; color: #596783; border: 1px solid #cfd5e3; border-radius: 7px; background: #ebeef5; transition: transform 180ms var(--ease-spring-soft), background-color 180ms ease; }
+.share-permalink button:hover { transform: translateY(-1px) scale(1.04); background: #e2e6f0; }
+.share-permalink button:active { transform: translateY(1px) scale(.94); }
+.share-permalink > span { margin-top: 6px; display: flex; align-items: center; gap: 5px; }
+.share-permalink strong { font-size: var(--text-caption); }
 .share-builder { margin-top: 17px; }
 .share-role-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .share-role-picker > button { min-height: 62px; padding: 10px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 9px; text-align: left; color: #777b84; border: 1px solid #dde0e5; border-radius: 10px; background: #fafbfc; transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 260ms var(--ease-spring-soft), box-shadow 180ms ease; }

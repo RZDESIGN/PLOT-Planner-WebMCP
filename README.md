@@ -164,7 +164,7 @@ npx supabase link --project-ref YOUR_PROJECT_REF
 npx supabase db push
 ```
 
-Then update `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`.
+Then update `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`. In production, also set `VITE_PUBLIC_APP_URL` to the one canonical HTTPS frontend URL (including a subdirectory path when applicable).
 
 ### Data model
 
@@ -180,7 +180,7 @@ Then update `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.loc
 - `proposal_actions`
 - `activity_events`
 
-All application tables have RLS enabled. Anonymous visitors can only read the seeded public template. Owners and editors can mutate a shared sprint; viewers can read it and receive the same Realtime updates but cannot write through the UI, WebMCP, REST, or RPC layer. A magic-link sign-in turns the explored board into the user's first private sprint. One-use invitation tokens are stored only as SHA-256 hashes, expire after seven days, and may optionally be locked to an email address.
+All application tables have RLS enabled. Anonymous visitors can only read the seeded public template. Owners and editors can mutate a shared sprint; viewers can read it and receive the same Realtime updates but cannot write through the UI, WebMCP, REST, or RPC layer. A magic-link sign-in uses PKCE, persists the resulting session in the browser, and turns the explored board into the user's first private sprint. One-use invitation tokens are stored only as SHA-256 hashes, expire after seven days, and may optionally be locked to an email address.
 
 For production, add the deployed URL to **Authentication → URL Configuration → Redirect URLs** in the Supabase dashboard.
 
@@ -191,7 +191,7 @@ Use **Share** in the top bar and choose one of two invitation roles:
 - **Can edit** lets a collaborator and their browser agent plan on the board.
 - **Live view** gives an authenticated viewer the complete board, Presence, sprint navigation, and instant card/sticky changes without write access.
 
-The generated link is one-use, login-protected, and valid for seven days. The people stack in the toolbar shows who is currently present; the Share dialog shows everyone with persistent access.
+Each sprint has a stable `?board=<id>` permalink for existing members. A generated invitation adds a separate one-use token, is login-protected, and remains valid for seven days. After acceptance, PLOT removes the token from the address bar while retaining the stable board URL. The people stack in the toolbar shows who is currently present; the Share dialog shows everyone with persistent access.
 
 Create another sprint from the sprint switcher in the top bar. Set its name, goal, capacity, and optional dates, then choose **Clean board** or **Carry everything**. PLOT creates the board, columns, cards, dependencies, and loose notes in one transaction and opens it immediately. The same lifecycle is available to a browser agent through `plot.list_sprints`, `plot.switch_sprint`, and `plot.create_sprint`.
 

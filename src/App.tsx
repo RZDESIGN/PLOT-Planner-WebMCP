@@ -16,6 +16,7 @@ import { Toast } from './components/Toast'
 import { NewSprintDialog, ShareDialog, SprintSwitcher } from './components/WorkspaceControls'
 import { useBoard } from './hooks/useBoard'
 import { useWebMcp } from './hooks/useWebMcp'
+import { readPlotNavigation } from './lib/navigation'
 
 function userInitials(email?: string) {
   if (!email) return 'RD'
@@ -26,7 +27,9 @@ function App() {
   const board = useBoard()
   const [sidekickOpen, setSidekickOpen] = useState(false)
   const sidekickTriggerRef = useRef<HTMLButtonElement | null>(null)
-  const [authOpen, setAuthOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState(
+    () => Boolean(readPlotNavigation(window.location.href).invitationToken),
+  )
   const [newSprintOpen, setNewSprintOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [newCardColumnId, setNewCardColumnId] = useState<string | null>(null)
@@ -70,8 +73,9 @@ function App() {
   }
   const webMcp = useWebMcp(toolApi)
   const isWorkspace = board.snapshot.source === 'supabase-workspace'
+  const authDialogOpen = authOpen && board.authReady && !board.session?.user
   const blockingOverlayOpen =
-    sidekickOpen || authOpen || newSprintOpen || shareOpen || Boolean(newCardColumnId) || Boolean(stickyDialog)
+    sidekickOpen || authDialogOpen || newSprintOpen || shareOpen || Boolean(newCardColumnId) || Boolean(stickyDialog)
 
   const closeSidekick = useCallback(() => {
     setSidekickOpen(false)
@@ -124,7 +128,10 @@ function App() {
             <button
               className="user-button"
               type="button"
-              onClick={() => void board.signOut().catch((error) => board.reportError(error, 'Could not sign out'))}
+              onClick={() => {
+                setAuthOpen(false)
+                void board.signOut().catch((error) => board.reportError(error, 'Could not sign out'))
+              }}
               title="Sign out"
               aria-label={`Sign out ${board.session.user.email || ''}`.trim()}
             >
@@ -197,7 +204,7 @@ function App() {
       </main>
 
       {sidekickOpen && <button className="panel-backdrop" type="button" aria-label="Close PLOT Sidekick" onClick={closeSidekick} />}
-      {authOpen && (
+      {authDialogOpen && (
         <AuthDialog open onClose={() => setAuthOpen(false)} onSendLink={board.sendMagicLink} />
       )}
       {newSprintOpen && (
@@ -212,6 +219,7 @@ function App() {
         <ShareDialog
           open
           boardTitle={board.snapshot.board.title}
+          boardUrl={board.boardUrl}
           collaborators={board.collaborators}
           canInvite={board.accessRole === 'owner'}
           onClose={() => setShareOpen(false)}

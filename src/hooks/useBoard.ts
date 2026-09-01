@@ -46,7 +46,14 @@ import {
   applyProposalToSnapshot,
   createFocusProposal,
 } from '../lib/planner'
-import { supabase } from '../lib/supabase'
+import { initializeSupabaseSession } from '../lib/authSession'
+import {
+  buildAuthRedirectUrl,
+  buildBoardUrl,
+  readPlotNavigation,
+  removeInvitationFromUrl,
+} from '../lib/navigation'
+import { publicAppUrl, supabase } from '../lib/supabase'
 import type {
   ActivityItem,
   AgentMotion,
@@ -80,6 +87,15 @@ const PROPOSAL_STAGGER_MS = 240
 
 function wait(milliseconds: number) {
   return new Promise<void>((resolve) => window.setTimeout(resolve, milliseconds))
+}
+
+function replaceBrowserUrl(nextHref: string) {
+  const url = new URL(nextHref)
+  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
+}
+
+function syncActiveBoardUrl(boardId: string) {
+  replaceBrowserUrl(buildBoardUrl(window.location.href, boardId))
 }
 
 export interface AppToast {
@@ -234,20 +250,34 @@ export function useBoard() {
 
   useEffect(() => {
     let active = true
-    void supabase.auth.getSession().then(({ data }) => {
+    const { data } = supabase.auth.onAuthStateChange((event, nextSession) => {
       if (!active) return
-      setSession(data.session)
-      setAuthReady(true)
-    })
-    const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      // Initial session resolution is owned by initializeSupabaseSession so a
+      // late null INITIAL_SESSION cannot overwrite a freshly exchanged callback.
+      if (event === 'INITIAL_SESSION') return
       setSession(nextSession)
-      setAuthReady(true)
     })
+
+    void initializeSupabaseSession(window.location.href, replaceBrowserUrl)
+      .then(({ session: initialSession, callbackError }) => {
+        if (!active) return
+        setSession(initialSession)
+        if (callbackError) reportError(callbackError, 'Sign-in could not be completed')
+      })
+      .catch((error) => {
+        if (!active) return
+        setSession(null)
+        reportError(error, 'Session could not be restored')
+      })
+      .finally(() => {
+        if (active) setAuthReady(true)
+      })
+
     return () => {
       active = false
       data.subscription.unsubscribe()
     }
-  }, [])
+  }, [reportError])
 
   useEffect(() => {
     if (!authReady) return
@@ -256,22 +286,20 @@ export function useBoard() {
       try {
         let next: BoardSnapshot
         if (session?.user) {
-          const url = new URL(window.location.href)
-          const invitationToken = url.searchParams.get('invite')
+          const navigation = readPlotNavigation(window.location.href)
+          const invitationToken = navigation.invitationToken
           let invitedBoardId: string | null = null
           if (invitationToken) {
             try {
               invitedBoardId = await acceptBoardInvitation(invitationToken)
-              url.searchParams.delete('invite')
-              window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+              replaceBrowserUrl(removeInvitationFromUrl(window.location.href))
               showToast({
                 title: 'You joined the sprint',
                 detail: 'The shared board is live and your access role is active.',
                 tone: 'success',
               })
             } catch (error) {
-              url.searchParams.delete('invite')
-              window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+              replaceBrowserUrl(removeInvitationFromUrl(window.location.href))
               reportError(error, 'Invitation could not be accepted')
             }
           }
@@ -280,9 +308,11 @@ export function useBoard() {
           let selectedBoardId = invitedBoardId
           if (!selectedBoardId) {
             const remembered = window.localStorage.getItem(`plot:active-sprint:${session.user.id}`)
-            selectedBoardId = accessible.some((item) => item.id === remembered)
-              ? remembered
-              : accessible[0]?.id || null
+            selectedBoardId = accessible.some((item) => item.id === navigation.boardId)
+              ? navigation.boardId
+              : accessible.some((item) => item.id === remembered)
+                ? remembered
+                : accessible[0]?.id || null
           }
 
           if (!selectedBoardId) {
@@ -316,6 +346,7 @@ export function useBoard() {
           setCollaborators(members)
           commitAccessRole(role)
           window.localStorage.setItem(`plot:active-sprint:${session.user.id}`, selectedBoardId)
+          syncActiveBoardUrl(selectedBoardId)
         } else {
           next = await loadPublicTemplate()
           if (cancelled) return
@@ -1080,6 +1111,7 @@ export function useBoard() {
         setCollaborators(nextCollaborators)
         commitAccessRole(target.role)
         window.localStorage.setItem(`plot:active-sprint:${session.user.id}`, target.id)
+        syncActiveBoardUrl(target.id)
         await transitionToSnapshot(next)
         return next
       } finally {
@@ -1110,6 +1142,7 @@ export function useBoard() {
         setCollaborators(nextCollaborators)
         commitAccessRole(target.role)
         window.localStorage.setItem(`plot:active-sprint:${session.user.id}`, boardId)
+        syncActiveBoardUrl(boardId)
         await transitionToSnapshot(next)
         showToast({
           title: 'Sprint created',
@@ -1133,9 +1166,13 @@ export function useBoard() {
         throw new Error('Only the sprint owner can create invitation links.')
       }
       const invitation = await createBoardInvitation(snapshotRef.current.board.id, input)
-      const url = new URL(window.location.href)
-      url.searchParams.set('invite', invitation.token)
-      return { ...invitation, url: url.toString() }
+      const url = buildBoardUrl(
+        window.location.href,
+        snapshotRef.current.board.id,
+        invitation.token,
+        publicAppUrl,
+      )
+      return { ...invitation, url }
     },
     [session],
   )
@@ -1143,7 +1180,9 @@ export function useBoard() {
   const sendMagicLink = useCallback(async (email: string) => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: window.location.href },
+      options: {
+        emailRedirectTo: buildAuthRedirectUrl(window.location.href, publicAppUrl),
+      },
     })
     if (error) throw error
   }, [])
@@ -1159,6 +1198,10 @@ export function useBoard() {
   }, [commitAccessRole, commitProposal])
 
   const analysis = useMemo(() => analyzeBoard(snapshot), [snapshot])
+  const boardUrl = useMemo(
+    () => buildBoardUrl(window.location.href, snapshot.board.id, undefined, publicAppUrl),
+    [snapshot.board.id],
+  )
 
   return {
     snapshot,
@@ -1177,6 +1220,7 @@ export function useBoard() {
     collaborators,
     presence,
     accessRole,
+    boardUrl,
     canEdit: accessRole !== 'viewer',
     dismissToast: () => setToast(null),
     reportError,

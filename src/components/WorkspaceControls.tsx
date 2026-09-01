@@ -210,18 +210,20 @@ export function NewSprintDialog({ currentTitle, open, onClose, onCreate }: NewSp
 interface ShareDialogProps {
   open: boolean
   boardTitle: string
+  boardUrl: string
   collaborators: Collaborator[]
   canInvite: boolean
   onClose: () => void
   onInvite: (input: CreateInvitationInput) => Promise<BoardInvitationLink & { url: string }>
 }
 
-export function ShareDialog({ open, boardTitle, collaborators, canInvite, onClose, onInvite }: ShareDialogProps) {
+export function ShareDialog({ open, boardTitle, boardUrl, collaborators, canInvite, onClose, onInvite }: ShareDialogProps) {
   const titleId = useId()
   const [role, setRole] = useState<'editor' | 'viewer'>('editor')
   const [email, setEmail] = useState('')
   const [link, setLink] = useState('')
   const [copied, setCopied] = useState(false)
+  const [boardCopied, setBoardCopied] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -258,6 +260,21 @@ export function ShareDialog({ open, boardTitle, collaborators, canInvite, onClos
         <h2 id={titleId}>Share “{boardTitle}”</h2>
         <p>Editors collaborate with people and AI. Live viewers see every move instantly, without write access.</p>
 
+        <div className="share-permalink">
+          <label htmlFor="board-permalink">Board permalink</label>
+          <div>
+            <input id="board-permalink" value={boardUrl} readOnly onFocus={(event) => event.currentTarget.select()} />
+            <button
+              type="button"
+              aria-label="Copy board permalink"
+              onClick={() => void navigator.clipboard.writeText(boardUrl).then(() => setBoardCopied(true)).catch(() => setBoardCopied(false))}
+            >
+              <Copy size={15} />
+            </button>
+          </div>
+          <span aria-live="polite"><Radio size={13} /><strong>{boardCopied ? 'Board link copied' : 'Stable link for existing members'}</strong></span>
+        </div>
+
         {canInvite ? (
           <div className="share-builder">
             <div className="share-role-picker" role="radiogroup" aria-label="Invitation role">
@@ -268,7 +285,7 @@ export function ShareDialog({ open, boardTitle, collaborators, canInvite, onClos
             <input id="invite-email" type="email" value={email} onChange={(event) => { setEmail(event.target.value); setLink(''); setCopied(false) }} placeholder="teammate@company.com" />
             {link ? (
               <div className="share-link-result">
-                <label htmlFor="invitation-link">Secure invitation link</label>
+                <label htmlFor="invitation-link">Unique invitation link</label>
                 <div>
                   <input id="invitation-link" value={link} readOnly onFocus={(event) => event.currentTarget.select()} />
                   <button type="button" aria-label="Copy invitation link" onClick={() => void navigator.clipboard.writeText(link).then(() => setCopied(true)).catch(() => setCopied(false))}>
