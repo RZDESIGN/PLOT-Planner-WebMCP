@@ -27,7 +27,7 @@
 | Color | Neutral grid and chrome with restrained pastel work blocks matching the reference's category language. | Pass |
 | Images and icons | Real PLOT favicon asset and consistent Lucide icons; no decorative raster asset was needed for the product surface. | Pass |
 | Copy | Board context is concise at fit view; card descriptions and labels return at 100% semantic zoom so no information is lost. | Pass |
-| Responsive behavior | Mobile opens on the active `Now` column at a readable 78%, adds persistent sprint/goal/capacity context plus direct Inbox/Now/Next/Later navigation, keeps share and sticky actions visible, and presents Sidekick as a full sheet. | Pass |
+| Responsive behavior | Mobile opens on the active `Now` column at a readable 86%, adds compact goal/capacity context plus direct Inbox/Now/Next/Later navigation, keeps share and sticky actions visible, and presents Sidekick as a content-sized sheet. | Pass |
 | Collaboration | Isolated owner and viewer sessions showed both Presence avatars; the viewer received a newly created card without refresh while every mutation control remained disabled. | Pass |
 | Interaction | Pan, fit, anchored zoom, scaled drag-and-drop, add-card, add/edit sticky, bidirectional card conversion, proposal preview/apply, and save/auth were exercised in Playwright. | Pass |
 | Loose-note language | Slight rotation, compact note chrome, restrained five-color palette, and spatial separation distinguish uncommitted thinking from structured cards without adding a second white surface. | Pass |
@@ -51,18 +51,18 @@
 - P1: The previous stacked header and document-like layout competed with the work. Replaced with one floating control bar and a full-viewport canvas.
 - P1: The wide board clipped without navigation. Added responsive auto-fit, trackpad/wheel pan, blank-space drag, Space + drag, anchored zoom, and a fit control.
 - P2: Default cards exposed too much metadata. Added semantic zoom: the fitted 90% view is compact, while 100% restores descriptions and labels.
-- P2: Mobile overflow obscured the information architecture. Replaced the unreadable literal 20% full fit with a 38% planning overview, progressive zoom/pan, and a dedicated Sidekick sheet.
+- P2: Mobile overflow obscured the information architecture. Replaced the unreadable literal full-board fit with an 86% active-column view, progressive zoom/pan, direct column navigation, and a dedicated Sidekick sheet.
 - P1: Collaboration status was previously implied rather than proven. Added private Presence, durable owner/editor/viewer membership, one-use invitations, a clear live-view badge, and database-enforced read-only behavior.
 - P1: Unshaped insights had nowhere to live without pretending they were backlog commitments. Added first-class sticky notes around the borderless board and reversible drag conversion with lossless planning metadata.
 - P2: The opaque white board card duplicated the canvas plane and weakened the reference's continuous spatial model. Removed its fill, border, radius, shadow, and nested white column backgrounds; the grid now flows through the planning surface. Post-fix evidence: `output/design-audit/11-focused-board-comparison.png`.
 - P1: Canvas movement changed abruptly between wheel, button, fit, and drag inputs. Added a shared requestAnimationFrame spring integrator, pointer-anchored target zoom, and velocity-projected inertial pan.
 - P1: Card movement did not yet preserve the physical continuity visible in the supplied motion references. Added velocity tilt/stretch, lift, animated layout reflow, drop overshoot, sequential agent View Transitions, and shorter proposal staging.
 - P2: Card descriptions and labels popped at the semantic-zoom breakpoint. Replaced display toggles with height, opacity, and translate transitions while keeping reduced-motion behavior immediate.
-- P3: Desktop Sidekick overlays the far-right canvas while open. This is intentional, temporary, and fully reversible with the close control.
+- P3: Desktop Sidekick overlays the far-right canvas while open. It now sizes to its content rather than occupying the full viewport height, and remains temporary and reversible with the close control.
 - P1: A visible proposal could not be dismissed because the generic write guard also blocked proposal resolution. Dismissal now has a role-specific guard and `Keep current board` was verified end to end.
 - P1: Mobile opened on an under-scaled, context-free part of the infinite canvas. It now starts on `Now`, exposes direct column focus controls, and keeps sprint goal and capacity visible above the canvas.
 - P2: Sidekick's planning action was below the fold and duplicated in Quick actions. The single primary action now sits directly below the focus score with explicit review-before-change copy.
-- P2: Guest mode and the mobile share action were too easy to miss. Desktop now shows a Demo badge, Save explains its sign-in requirement, and Share remains available on mobile so the route to collaboration stays discoverable.
+- P2: Guest mode and the mobile share action were too easy to miss. The primary guest action now says `Sign in`, and Share remains available on mobile so the route to collaboration stays discoverable.
 - P2: Magic-link guidance appeared too late. The authentication dialog now says up front that the email link must be opened in the same browser.
 - P2: Sidekick repeated the same planning promise across its header, focus card, CTA, three long signals, demo prompt, duplicate preview action, and footer. It now presents one compact score, one primary action, two title-only signals, and a status-only footer; consecutive duplicate activity events are collapsed.
 - P1: The root named `Inter` without loading it, sticky notes named an unavailable `DM Sans`, and the mono token was undefined. Replaced the fallback-dependent stack with self-hosted Geist Sans and Geist Mono variable fonts, including the upstream OFL license.
@@ -78,6 +78,7 @@
 - Automated checks: `npm run check`, clean browser console, and `git diff --check`
 - Evidence limit: owner/editor/viewer collaboration states were covered in the earlier isolated-session QA above; this pass concentrated on anonymous first-use and responsive usability.
 - Typography and scale pass: `output/ux-audit/typography-scale/README.md`
+- Second simplicity pass: `output/ux-audit/second-simplicity-pass/README.md`
 
 ## Final result
 

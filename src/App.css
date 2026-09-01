@@ -103,8 +103,6 @@
   gap: 6px;
 }
 
-.demo-mode-badge { height: 24px; padding: 0 7px; display: inline-flex; align-items: center; color: #686d75; border: 1px solid #dde0e5; border-radius: 7px; background: #f3f4f6; font-size: var(--text-micro); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
-
 .sync-state {
   width: 30px;
   height: 30px;
@@ -383,6 +381,7 @@
 }
 
 .board-viewport[data-detail="compact"] .board-surface__header { min-height: 70px; }
+.board-viewport[data-detail="compact"] .surface-title > span { display: none; }
 .board-viewport[data-detail="compact"] .surface-title p { max-height: 0; margin-top: 0; opacity: 0; }
 
 .surface-goal {
@@ -746,7 +745,7 @@
   position: fixed;
   right: 13px;
   top: 72px;
-  bottom: 13px;
+  max-height: calc(100dvh - 85px);
   z-index: 220;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
@@ -997,7 +996,6 @@
   .sprint-menu { width: min(330px, calc(100vw - 16px)); left: -38px; }
   .sync-state,
   .presence-stack,
-  .demo-mode-badge,
   .user-button strong { display: none; }
   .save-button { width: 36px; height: 36px; padding: 0; }
   .save-button span { display: none; }
@@ -1008,15 +1006,13 @@
   .sidekick-trigger b { display: none; }
   .board-surface__header,
   .critical-path { display: none; }
-  .mobile-board-context { padding: 10px var(--space-3); position: absolute; top: 64px; right: 8px; left: 8px; z-index: 75; display: block; color: #35383d; border: 1px solid rgba(214,217,222,.94); border-radius: 12px; background: rgba(255,255,255,.92); box-shadow: 0 8px 24px rgba(32,35,41,.08); backdrop-filter: blur(18px); }
-  .mobile-board-context__summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .mobile-board-context__summary > div { min-width: 0; }
-  .mobile-board-context__summary span { display: block; color: #91959d; font-size: var(--text-micro); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
-  .mobile-board-context__summary strong { margin-top: 2px; display: block; overflow: hidden; font-size: var(--text-small); font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
-  .mobile-board-context__summary b { flex: 0 0 auto; font-size: var(--text-title); }
-  .mobile-board-context__summary b small { color: #969aa2; font-size: var(--text-micro); font-weight: 620; }
-  .mobile-board-context > p { margin: 5px 0 var(--space-2); display: flex; align-items: center; gap: 5px; overflow: hidden; color: #6f747c; font-size: var(--text-caption); text-overflow: ellipsis; white-space: nowrap; }
-  .mobile-board-context > p svg { flex: 0 0 auto; color: #6f9d2e; }
+  .mobile-board-context { padding: var(--space-2) var(--space-3); position: absolute; top: 64px; right: 8px; left: 8px; z-index: 75; display: block; color: #35383d; border: 1px solid rgba(214,217,222,.94); border-radius: 12px; background: rgba(255,255,255,.92); box-shadow: 0 8px 24px rgba(32,35,41,.08); backdrop-filter: blur(18px); }
+  .mobile-board-context__goal { margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+  .mobile-board-context__goal p { min-width: 0; margin: 0; display: flex; align-items: center; gap: 5px; overflow: hidden; color: #6f747c; font-size: var(--text-caption); }
+  .mobile-board-context__goal p span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mobile-board-context__goal p svg { flex: 0 0 auto; color: #6f9d2e; }
+  .mobile-board-context__goal b { flex: 0 0 auto; font-size: var(--text-title); font-weight: 620; }
+  .mobile-board-context__goal b small { color: #969aa2; font-size: var(--text-micro); font-weight: 560; }
   .mobile-column-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
   .mobile-column-nav button { min-width: 0; height: 32px; padding: 0 5px; display: flex; align-items: center; justify-content: center; gap: 4px; overflow: hidden; color: #767b83; border: 1px solid transparent; border-radius: 7px; background: #f4f5f7; font-size: var(--text-caption); font-weight: 560; text-overflow: ellipsis; white-space: nowrap; }
   .mobile-column-nav button > span { width: 6px; height: 6px; flex: 0 0 auto; border: 1px solid rgba(42,45,50,.12); border-radius: 2px; }

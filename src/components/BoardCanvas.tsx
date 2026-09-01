@@ -43,7 +43,6 @@ import {
   GripVertical,
   Hand,
   Link2,
-  Maximize2,
   Minus,
   MousePointer2,
   Pencil,
@@ -98,6 +97,8 @@ interface CardProps {
 
 const MIN_ZOOM = 0.2
 const MAX_ZOOM = 1.35
+const MOBILE_CANVAS_ZOOM = 0.86
+const MOBILE_CANVAS_Y = 148
 const PROPOSAL_STAGGER_MS = 240
 const STICKY_WIDTH = 200
 const STICKY_HEIGHT = 160
@@ -621,11 +622,11 @@ export function BoardCanvas({
         0,
         snapshot.columns.findIndex((column) => column.client_key === 'now'),
       )
-      const nextZoom = 0.78
+      const nextZoom = MOBILE_CANVAS_ZOOM
       const columnWidth = boardSurface.offsetWidth / Math.max(1, snapshot.columns.length)
       const nextTransform = {
         x: Math.round(12 - defaultColumnIndex * columnWidth * nextZoom),
-        y: 170,
+        y: MOBILE_CANVAS_Y,
         zoom: nextZoom,
       }
       if (animate) {
@@ -663,13 +664,13 @@ export function BoardCanvas({
     const boardSurface = boardSurfaceRef.current
     const columnIndex = snapshot.columns.findIndex((column) => column.id === columnId)
     if (!boardSurface || columnIndex < 0) return
-    const nextZoom = 0.78
+    const nextZoom = MOBILE_CANVAS_ZOOM
     const columnWidth = boardSurface.offsetWidth / Math.max(1, snapshot.columns.length)
     setSelectedMobileColumnId(columnId)
     animateCanvasTo(
       {
         x: Math.round(12 - columnIndex * columnWidth * nextZoom),
-        y: 170,
+        y: MOBILE_CANVAS_Y,
         zoom: nextZoom,
       },
       {
@@ -1077,14 +1078,10 @@ export function BoardCanvas({
       </div>
 
       <section className="mobile-board-context" aria-label="Mobile board navigation">
-        <div className="mobile-board-context__summary">
-          <div>
-            <span>Active sprint</span>
-            <strong>{snapshot.board.title}</strong>
-          </div>
+        <div className="mobile-board-context__goal">
+          <p><Goal size={13} /> <span>{snapshot.board.sprint_goal}</span></p>
           <b>{plannedPoints}<small>/{snapshot.board.capacity} pts</small></b>
         </div>
-        <p><Goal size={13} /> {snapshot.board.sprint_goal}</p>
         <div className="mobile-column-nav" role="toolbar" aria-label="Focus a sprint column">
           {snapshot.columns.map((column) => (
             <button
@@ -1110,10 +1107,6 @@ export function BoardCanvas({
         </button>
         <button type="button" aria-label="Zoom in" title="Zoom in" onClick={() => zoomAt(getCanvasTarget().zoom + 0.1)}>
           <Plus size={15} />
-        </button>
-        <span />
-        <button type="button" aria-label="Fit board to screen" title="Fit board to screen" onClick={() => fitCanvas()}>
-          <Maximize2 size={14} />
         </button>
         <span />
         <button
