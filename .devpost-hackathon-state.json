@@ -1,0 +1,40 @@
+{
+  "plugin": "devpost-hackathon",
+  "version": 2,
+  "hackathon": {
+    "slug": "webmcp",
+    "name": "The WebMCP Challenge",
+    "url": "https://webmcp.devpost.com/",
+    "selected": true,
+    "source": "known"
+  },
+  "participant": {
+    "name": "RicardoDeZoete | Hammy",
+    "display_name": "RicardoDeZoete | Hammy"
+  },
+  "project": {
+    "name": "PLOT",
+    "summary": "A collaborative sprint-planning canvas where people and WebMCP agents shape, prioritize, and move work together.",
+    "ai_usage": "Browser agents collaborate through 17 WebMCP tools; the planner itself stays deterministic and keeps mutations visible and reviewable.",
+    "codex_usage": "Codex supported implementation, refactoring, Supabase/RLS hardening, UX iteration, tests, Playwright review and submission documentation."
+  },
+  "current_stage": "prepare-submission",
+  "completed_stages": [
+    "start-hackathon",
+    "review-hackathon-rules",
+    "resources"
+  ],
+  "rules_acknowledged": true,
+  "learning": {
+    "status": "not-started",
+    "current_step": "",
+    "completed_steps": [],
+    "plan_file": "",
+    "checklist_file": ""
+  },
+  "submission": {
+    "draft_file": "devpost-submission.md",
+    "status": "drafting"
+  },
+  "next_command": "prepare-submission"
+}

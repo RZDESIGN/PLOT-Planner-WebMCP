@@ -3,7 +3,7 @@
   <h1>PLOT</h1>
   <p><strong>A shared planning canvas for humans and browser agents.</strong></p>
   <p>
-    <a href="https://openai.com/webmcp-challenge/">OpenAI WebMCP Challenge</a>
+    <a href="https://webmcp.devpost.com/">The WebMCP Challenge</a>
     · <a href="docs/CHALLENGE_SUBMISSION.md">Submission kit</a>
     · <a href="docs/DEPLOYMENT.md">Deployment guide</a>
     · <a href="https://github.com/RZDESIGN/PLOT-Planner-WebMCP">Public repository</a>
@@ -12,9 +12,9 @@
 
 PLOT turns a backlog into a visible, dependency-aware plan. Humans and browser agents can place loose sticky notes around the board, shape them into sprint cards, or pull cards back into open thinking while preserving their planning metadata. Agent changes never disappear into chat: every note, card, dependency, and proposal remains visible on the shared canvas.
 
-Built during the submission period for the [OpenAI WebMCP Challenge](https://openai.com/webmcp-challenge/). PLOT is intentionally not a chat wrapper: WebMCP lets the browser agent participate in the same structured, animated and reviewable planning state as the human team.
+Built from its first commit onward during the submission period for [The WebMCP Challenge](https://webmcp.devpost.com/). PLOT is intentionally not a chat wrapper: WebMCP lets the browser agent participate in the same structured, animated and reviewable planning state as the human team.
 
-![PLOT realtime live view with two collaborators](output/playwright/collaboration-live-view-desktop.png)
+![PLOT planning canvas with sprint cards and loose sticky notes](output/ux-audit/second-simplicity-pass/improved/01-desktop-board.png)
 
 ## Why PLOT
 
@@ -216,7 +216,7 @@ The complete production checklist is in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.m
 
 ## Testing and review
 
-Pure board rules have Node regression coverage in `tests/boardModel.test.ts`. End-to-end review uses the Playwright CLI against the real page and WebMCP page bridge. Review artifacts include full-screen desktop, mobile overview, mobile Sidekick, proposal, applied-plan, zoom/pan, and in-motion drag screenshots under `output/playwright/`. The original sprint walkthrough is available at `output/playwright/plot-motion-demo.mp4`; the focused sticky/card round-trip is recorded at `output/playwright/plot-sticky-conversion-demo.mp4`. Local browser traces remain in the ignored `.playwright-cli/traces/` directory.
+Pure board rules have Node regression coverage in `tests/boardModel.test.ts`. End-to-end review uses the Playwright CLI against the real page and WebMCP page bridge. Tracked review artifacts include full-screen desktop, mobile overview, mobile Sidekick, proposal, applied-plan, collaboration, zoom/pan, and in-motion drag screenshots under `output/`. Local recordings and browser traces remain ignored so the public repository stays lean; the final narrated demo will be linked from the Devpost entry.
 
 Verified flows:
 
@@ -256,7 +256,7 @@ Verified flows:
 
 ## Challenge submission
 
-The submission narrative, sub-three-minute demo script, judging-criteria mapping and honest launch checklist live in [`docs/CHALLENGE_SUBMISSION.md`](docs/CHALLENGE_SUBMISSION.md).
+The form-ready draft is in [`devpost-submission.md`](devpost-submission.md). The supporting narrative, sub-three-minute demo script, judging-criteria mapping and honest launch checklist live in [`docs/CHALLENGE_SUBMISSION.md`](docs/CHALLENGE_SUBMISSION.md).
 
 ## Contributing and security
 

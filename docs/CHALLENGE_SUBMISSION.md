@@ -58,19 +58,14 @@ PLOT demonstrates the part of WebMCP that matters most for collaborative softwar
 - Create one new card with `plot.create_card`; show it animate for the editor and appear without refresh for the viewer.
 - Point out that the viewer's mutation controls are disabled and that Supabase RLS independently rejects writes.
 
-## Judging-criteria mapping
+## Official judging-criteria mapping
 
-### Usefulness
+### WebMCP Leverage
 
-- Removes the translation step between an agent recommendation and a planning board.
-- Surfaces capacity, blockers, and goal fit in the place the team already works.
-- Keeps human and agent decisions in one visible activity trail.
-
-### Originality
-
-- Treats WebMCP as a collaboration protocol for shared visual state, not only as browser automation.
-- Uses ghost proposals as an explicit human-agent negotiation layer.
-- Gives agent-authored changes a distinct, legible motion language.
+- Registers seventeen schema-constrained tools through the browser's imperative `document.modelContext.registerTool()` API.
+- Exposes the current board, notes, dependencies, capacity, proposal state, access role and sprint lifecycle as structured context instead of relying on screen scraping.
+- Reuses the same typed React actions for people and agents, including validation, authorization, motion, persistence and activity history.
+- Separates observe, suggest and act behavior; multi-card scope changes become reviewable ghost state before anything is applied.
 
 ### Execution
 
@@ -80,22 +75,19 @@ PLOT demonstrates the part of WebMCP that matters most for collaborative softwar
 - Invite-based owner, editor and live-view roles enforced across UI, WebMCP and Postgres RLS.
 - Responsive UI, reduced-motion support, and keyboard drag support.
 
-### Thoughtful WebMCP use
+### Potential Impact
 
-- Read-only annotations for observe tools.
-- One-card mutations are immediate and visible.
-- Loose thinking has first-class create, edit, move, shape, and unshape tools.
-- Sticky/card conversion reuses the same domain actions as drag-and-drop and preserves planning metadata.
-- Multi-card scope changes require a proposal and separate apply action.
-- Tool handlers operate on the active page state and reuse UI validation/persistence paths.
+- Removes the translation step between an agent recommendation and the planning board where a team already works.
+- Makes capacity, blockers, goal fit and proposed scope changes visible to owners, editors and live viewers.
+- Keeps the human in control while letting the agent contribute directly to durable shared state.
+- Gives distributed product teams a concrete pattern for safe human-agent planning rather than another isolated chat transcript.
 
-### Human-agent experience
+### Creativity & Ambition
 
-- The agent observes before suggesting.
-- The human sees where every proposed card came from and why it moves.
-- Dismiss is non-destructive.
-- Apply happens sequentially and visibly.
-- Focus score and critical-path status explain the outcome.
+- Treats WebMCP as a collaboration protocol for shared visual state, not only as browser automation.
+- Uses animated ghost proposals as an explicit human-agent negotiation layer.
+- Lets loose sticky notes and structured sprint cards transform into each other without losing planning metadata.
+- Gives agent-authored changes a distinct, legible motion language and broadcasts approved results to the whole team.
 
 ## Submission copy
 
@@ -111,14 +103,14 @@ PLOT demonstrates the part of WebMCP that matters most for collaborative softwar
 - [ ] Deploy the production build to a public HTTPS URL.
 - [ ] Add the production URL to Supabase Auth redirect URLs.
 - [ ] Verify all seventeen tools in the target WebMCP-capable browser and record at least one real agent call.
-- [ ] Run `npm run check` on the submission commit.
+- [x] Run `npm run check` on the prepared submission commit.
 - [x] Re-run the Playwright desktop and mobile smoke flows.
 - [x] Record the motion demo at 1440×900 (`output/playwright/plot-motion-demo.mp4`).
 - [x] Record the sticky/card round-trip (`output/playwright/plot-sticky-conversion-demo.mp4`).
 - [ ] Keep browser zoom at 100% and use the public template for a deterministic start.
 - [ ] Record the final public YouTube video under three minutes with spoken audio.
 - [ ] Include the live URL, public repository and public video in the submission form.
-- [ ] Confirm the repository contains no secret or `service_role` key.
+- [x] Confirm the tracked repository contains no secret or `service_role` key.
 
 ## Current evidence
 
@@ -126,12 +118,18 @@ PLOT demonstrates the part of WebMCP that matters most for collaborative softwar
 - Desktop collaboration capture: `output/playwright/collaboration-live-view-desktop.png`
 - Mobile live-view capture: `output/playwright/collaboration-live-view-mobile.png`
 - Sprint switcher capture: `output/playwright/collaboration-sprint-menu.png`
-- Rough silent recordings: `output/playwright/plot-demo.mp4`, `plot-motion-demo.mp4`, and `plot-sticky-conversion-demo.mp4`
+- Current-UI board capture: `output/ux-audit/second-simplicity-pass/improved/01-desktop-board.png`
+- Current-UI proposal capture: `output/ux-audit/second-simplicity-pass/improved/04-desktop-proposal.png`
+- Rough silent recordings exist locally and are intentionally not committed; the final narrated video still needs to be published.
 - Public demo URL: **TODO after deployment**
 - Public YouTube URL with audio: **TODO**
 
+## Submission-period evidence
+
+PLOT is a new project for this challenge. The first repository commit was created on August 31, 2026, after the August 25 submission-period start. The public history then documents the canvas launch, drag/readability work, durable authentication and board links, collaboration UX, Sidekick simplification, typography and final control refinements.
+
 ## Useful links
 
-- [OpenAI WebMCP Challenge](https://openai.com/webmcp-challenge/)
+- [The WebMCP Challenge on Devpost](https://webmcp.devpost.com/)
 - [WebMCP explainer and specification work](https://github.com/webmachinelearning/webmcp)
 - [OpenAI WebMCP apps showcase](https://developers.openai.com/showcase?view=webmcp-apps)
