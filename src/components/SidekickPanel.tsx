@@ -6,7 +6,6 @@ import {
   Check,
   Copy,
   Lightbulb,
-  ShieldCheck,
   Sparkles,
   X,
   Zap,
@@ -101,11 +100,16 @@ export function SidekickPanel({
   }
 
   const webMcpCopy = {
-    active: `${toolCount} tools live`,
-    registering: 'Registering tools',
-    unsupported: `${toolCount} tools ready`,
-    error: 'Tool registration issue',
+    active: `${toolCount} tools`,
+    registering: 'Connecting',
+    unsupported: `${toolCount} ready`,
+    error: 'Unavailable',
   }[webMcpStatus]
+  const visibleActivities = activities.filter(
+    (item, index) => index === 0
+      || item.title !== activities[index - 1]?.title
+      || item.detail !== activities[index - 1]?.detail,
+  )
 
   return (
     <aside
@@ -118,10 +122,7 @@ export function SidekickPanel({
       <header className="sidekick-header">
         <div className="sidekick-identity">
           <span className="sidekick-avatar"><Bot size={18} /></span>
-          <div>
-            <strong>PLOT Sidekick</strong>
-            <span><i /> Product planner · online</span>
-          </div>
+          <strong>PLOT Sidekick</strong>
         </div>
         <button ref={closeButtonRef} className="icon-button sidekick-close" type="button" onClick={onClose} aria-label="Close sidekick">
           <X size={18} />
@@ -133,7 +134,7 @@ export function SidekickPanel({
           <Sparkles size={15} /> Plan
         </button>
         <button id="sidekick-activity-tab" className={tab === 'activity' ? 'is-active' : ''} onClick={() => setTab('activity')} role="tab" type="button" aria-selected={tab === 'activity'} aria-controls="sidekick-activity-panel" tabIndex={tab === 'activity' ? 0 : -1}>
-          <Activity size={15} /> Activity <span>{activities.length}</span>
+          <Activity size={15} /> Activity <span>{visibleActivities.length}</span>
         </button>
       </div>
 
@@ -141,20 +142,18 @@ export function SidekickPanel({
         <div id="sidekick-plan-panel" className="sidekick-body" role="tabpanel" aria-labelledby="sidekick-plan-tab">
           {proposal ? (
             <section className="proposal-review" aria-live="polite">
-              <div className="proposal-kicker"><Sparkles size={14} /> Review before applying</div>
+              <div className="proposal-kicker"><Sparkles size={14} /> Plan preview</div>
               <h2>{proposal.title}</h2>
-              <p>{proposal.summary}</p>
               <div className="proposal-actions">
                 {proposal.actions.map((action) => {
                   const from = snapshot.columns.find((column) => column.id === action.fromColumnId)
                   const to = snapshot.columns.find((column) => column.id === action.toColumnId)
                   return (
-                    <article key={action.id}>
+                    <article key={action.id} aria-label={`${action.cardTitle}: ${from?.title} to ${to?.title}. ${action.rationale}`}>
                       <span className="action-icon"><ArrowRight size={14} /></span>
                       <div>
                         <strong>{action.cardTitle}</strong>
                         <span>{from?.title} <ArrowRight size={11} /> {to?.title}</span>
-                        <p>{action.rationale}</p>
                       </div>
                     </article>
                   )
@@ -162,23 +161,22 @@ export function SidekickPanel({
               </div>
               <div className="proposal-controls">
                 <button className="primary-button" type="button" disabled={working || readOnly} onClick={() => void run(onApply)}>
-                  <Check size={16} /> {working ? 'Applying…' : 'Accept all'}
+                  <Check size={16} /> {working ? 'Applying…' : 'Accept plan'}
                 </button>
                 <button className="secondary-button" type="button" disabled={working || readOnly} onClick={() => void run(onDismiss)}>
-                  Keep current board
+                  Keep board
                 </button>
               </div>
-              <div className="human-control-note"><ShieldCheck size={14} /> Nothing changes until you accept.</div>
             </section>
           ) : (
             <>
               <section className="focus-score-card">
                 <div className="focus-score__header">
-                  <span>Board focus</span>
+                  <span>Focus</span>
                   <strong>{analysis.focusScore}<small>/100</small></strong>
+                  <b>{analysis.plannedPoints}/{analysis.capacity} pts</b>
                 </div>
                 <div className="focus-meter"><span style={{ width: `${analysis.focusScore}%` }} /></div>
-                <p>{analysis.plannedPoints} of {analysis.capacity} points are currently in Now.</p>
               </section>
 
               <button
@@ -189,25 +187,22 @@ export function SidekickPanel({
               >
                 <Sparkles size={15} />
                 <span>
-                  <strong>{readOnly ? 'Live view only' : working ? 'Building proposal…' : 'Preview an improved plan'}</strong>
-                  <small>Review every move before anything changes</small>
+                  <strong>{readOnly ? 'Live view only' : working ? 'Building preview…' : 'Preview plan'}</strong>
                 </span>
                 <ArrowRight size={15} />
               </button>
 
               <section className="sidekick-section">
                 <div className="section-heading">
-                  <span>What I see</span>
-                  <small>Observe</small>
+                  <span>Top signals</span>
                 </div>
                 <div className="insight-list">
-                  {analysis.insights.slice(0, 3).map((insight) => (
+                  {analysis.insights.slice(0, 2).map((insight) => (
                     <article className={`insight-card tone-${insight.tone}`} key={insight.id}>
                       <span className="insight-icon">
                         {insight.tone === 'critical' ? <Zap size={15} /> : insight.tone === 'positive' ? <Check size={15} /> : <Lightbulb size={15} />}
                       </span>
                       <div>
-                        <small>{insight.eyebrow}</small>
                         <strong>{insight.title}</strong>
                         <p>{insight.detail}</p>
                       </div>
@@ -216,28 +211,19 @@ export function SidekickPanel({
                 </div>
               </section>
 
-              <section className="prompt-card">
-                <div className="prompt-card__top"><Bot size={15} /> Try this with your browser agent</div>
-                <blockquote>“{demoPrompt}”</blockquote>
-                <div>
-                  <button type="button" onClick={() => void copyPrompt()}>
-                    {copied ? <Check size={14} /> : <Copy size={14} />}
-                    {copied ? 'Copied' : 'Copy prompt'}
-                  </button>
-                  <button className="prompt-run" type="button" disabled={working || readOnly} onClick={() => void run(onPropose)}>
-                    <Sparkles size={14} /> {readOnly ? 'Live view only' : working ? 'Planning…' : 'Preview result'}
-                  </button>
-                </div>
-              </section>
+              <button className="prompt-copy" type="button" title={demoPrompt} onClick={() => void copyPrompt()}>
+                <Bot size={14} />
+                {copied ? 'Prompt copied' : 'Copy agent prompt'}
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+              </button>
 
             </>
           )}
         </div>
       ) : (
         <div id="sidekick-activity-panel" className="sidekick-body activity-view" role="tabpanel" aria-labelledby="sidekick-activity-tab">
-          <div className="section-heading"><span>Shared activity</span><small>Live</small></div>
           <div className="activity-timeline">
-            {activities.map((item) => (
+            {visibleActivities.map((item) => (
               <article key={item.id}>
                 <span className={`timeline-dot actor-${item.actor.toLowerCase()}`} />
                 <div>
@@ -258,7 +244,8 @@ export function SidekickPanel({
           <span><i /> WebMCP</span>
           <strong>{webMcpCopy}</strong>
         </div>
-        <p>{webMcpStatus === 'unsupported' ? 'Open in ChatGPT’s browser or WebMCP-enabled Chrome to expose tools.' : 'The agent acts on this page and shares your live session.'}</p>
+        {webMcpStatus === 'unsupported' && <p>Requires a WebMCP browser.</p>}
+        {webMcpStatus === 'error' && <p>Reload to reconnect.</p>}
       </footer>
     </aside>
   )

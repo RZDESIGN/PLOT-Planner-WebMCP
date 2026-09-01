@@ -64,6 +64,7 @@
 - P2: Sidekick's planning action was below the fold and duplicated in Quick actions. The single primary action now sits directly below the focus score with explicit review-before-change copy.
 - P2: Guest mode and the mobile share action were too easy to miss. Desktop now shows a Demo badge, Save explains its sign-in requirement, and Share remains available on mobile so the route to collaboration stays discoverable.
 - P2: Magic-link guidance appeared too late. The authentication dialog now says up front that the email link must be opened in the same browser.
+- P2: Sidekick repeated the same planning promise across its header, focus card, CTA, three long signals, demo prompt, duplicate preview action, and footer. It now presents one compact score, one primary action, two signals, one prompt shortcut, and a status-only footer; consecutive duplicate activity events are collapsed.
 
 ## September 1, 2026 audit evidence
 
