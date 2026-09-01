@@ -1,11 +1,29 @@
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
-  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
   color: #202124;
   background: #f8f9fb;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --font-sans: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
   --ink: #202124;
   --muted: #62666d;
   --soft-muted: #969ba3;
@@ -22,12 +40,18 @@
   --red: #ef6375;
   --panel: #ffffff;
   --panel-soft: #f6f7f9;
-  --text-micro: 12px;
-  --text-caption: 13px;
-  --text-small: 14px;
-  --text-body: 15px;
-  --text-ui: 16px;
-  --text-title: 17px;
+  --text-micro: 11.5px;
+  --text-caption: 12.5px;
+  --text-small: 13.5px;
+  --text-body: 14.5px;
+  --text-ui: 14.5px;
+  --text-title: 16.5px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius-control: 8px;
+  --radius-panel: 14px;
   --motion-fast: 160ms;
   --motion-medium: 320ms;
   --motion-slow: 560ms;
@@ -51,6 +75,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow: hidden;
+  font-weight: 450;
+  line-height: 1.4;
 }
 
 button,

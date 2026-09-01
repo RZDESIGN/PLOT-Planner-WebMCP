@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
 import {
-  Bot,
   Cloud,
   CloudOff,
   Eye,
@@ -125,7 +124,6 @@ function App() {
               </span>
             ))}
             {board.presence.length > 4 && <span className="presence-avatar presence-more">+{board.presence.length - 4}</span>}
-            <span className="presence-avatar avatar-agent" title="PLOT Sidekick"><Bot size={12} /></span>
           </div>
           {board.session?.user ? (
             <button

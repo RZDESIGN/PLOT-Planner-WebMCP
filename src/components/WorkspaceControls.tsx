@@ -85,7 +85,6 @@ export function SprintSwitcher({
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
       >
-        <span><Radio size={11} /> Sprint</span>
         <strong>{activeTitle}</strong>
         <ChevronDown size={14} />
       </button>

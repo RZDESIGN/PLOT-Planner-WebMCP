@@ -64,7 +64,10 @@
 - P2: Sidekick's planning action was below the fold and duplicated in Quick actions. The single primary action now sits directly below the focus score with explicit review-before-change copy.
 - P2: Guest mode and the mobile share action were too easy to miss. Desktop now shows a Demo badge, Save explains its sign-in requirement, and Share remains available on mobile so the route to collaboration stays discoverable.
 - P2: Magic-link guidance appeared too late. The authentication dialog now says up front that the email link must be opened in the same browser.
-- P2: Sidekick repeated the same planning promise across its header, focus card, CTA, three long signals, demo prompt, duplicate preview action, and footer. It now presents one compact score, one primary action, two signals, one prompt shortcut, and a status-only footer; consecutive duplicate activity events are collapsed.
+- P2: Sidekick repeated the same planning promise across its header, focus card, CTA, three long signals, demo prompt, duplicate preview action, and footer. It now presents one compact score, one primary action, two title-only signals, and a status-only footer; consecutive duplicate activity events are collapsed.
+- P1: The root named `Inter` without loading it, sticky notes named an unavailable `DM Sans`, and the mono token was undefined. Replaced the fallback-dependent stack with self-hosted Geist Sans and Geist Mono variable fonts, including the upstream OFL license.
+- P2: Dense one-pixel type steps, heavy 650–760 weights, and irregular padding made the interface feel smaller and less deliberate at 100%. Consolidated the scale, normalized the 4/8/12/16 rhythm and shared radii, and reduced weight and tracking throughout the top bar, board, cards, Sidekick, and dialogs.
+- P2: Compact board zoom repeated sprint and column descriptions while the user needed a fast planning scan. Those descriptions now collapse visually at compact semantic zoom and remain present in the DOM and at detailed zoom.
 
 ## September 1, 2026 audit evidence
 
@@ -74,6 +77,7 @@
 - Entry flows: authentication, sprint switcher, share entry, and add-card dialog
 - Automated checks: `npm run check`, clean browser console, and `git diff --check`
 - Evidence limit: owner/editor/viewer collaboration states were covered in the earlier isolated-session QA above; this pass concentrated on anonymous first-use and responsive usability.
+- Typography and scale pass: `output/ux-audit/typography-scale/README.md`
 
 ## Final result
 

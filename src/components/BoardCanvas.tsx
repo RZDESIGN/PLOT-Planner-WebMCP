@@ -979,7 +979,7 @@ export function BoardCanvas({
         <section ref={boardSurfaceRef} className="board-surface" data-read-only={readOnly} aria-label={`${snapshot.board.title} planning board`}>
           <header className="board-surface__header">
             <div className="surface-title">
-              <span>Planning board · {snapshot.cards.length} cards · {snapshot.stickyNotes.length} loose notes</span>
+              <span>{snapshot.cards.length} cards · {snapshot.stickyNotes.length} notes</span>
               <h1>{snapshot.board.title}</h1>
               <p>{snapshot.board.description}</p>
             </div>
@@ -1143,10 +1143,8 @@ export function BoardCanvas({
             ? 'Drop in a column to turn this note into a card'
             : activeCard
               ? 'Drop outside the board to turn this card into a sticky'
-              : 'Space + drag to pan'}
+              : 'Drag to pan · ⌘ scroll to zoom'}
         </span>
-        {!activeSticky && !activeCard && <i />}
-        {!activeSticky && !activeCard && <span>⌘/Ctrl + scroll to zoom</span>}
       </div>
     </div>
   )

@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Bot,
   Check,
-  Copy,
   Lightbulb,
   Sparkles,
   X,
@@ -32,8 +31,6 @@ interface SidekickPanelProps {
   onDismiss: () => Promise<unknown>
 }
 
-const demoPrompt = 'We have three days left. Protect the sprint goal and show me a realistic plan before applying anything.'
-
 export function SidekickPanel({
   analysis,
   snapshot,
@@ -49,10 +46,8 @@ export function SidekickPanel({
   onDismiss,
 }: SidekickPanelProps) {
   const [tab, setTab] = useState<'plan' | 'activity'>('plan')
-  const [copied, setCopied] = useState(false)
   const [working, setWorking] = useState(false)
   const [error, setError] = useState('')
-  const copiedTimerRef = useRef<number | null>(null)
   const closeButtonRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
@@ -65,13 +60,6 @@ export function SidekickPanel({
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [onClose, open])
 
-  useEffect(
-    () => () => {
-      if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current)
-    },
-    [],
-  )
-
   async function run(action: () => Promise<unknown>) {
     setWorking(true)
     setError('')
@@ -81,21 +69,6 @@ export function SidekickPanel({
       setError(nextError instanceof Error ? nextError.message : 'The action could not be completed.')
     } finally {
       setWorking(false)
-    }
-  }
-
-  async function copyPrompt() {
-    setError('')
-    try {
-      await navigator.clipboard.writeText(demoPrompt)
-      setCopied(true)
-      if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current)
-      copiedTimerRef.current = window.setTimeout(() => {
-        copiedTimerRef.current = null
-        setCopied(false)
-      }, 1600)
-    } catch {
-      setError('The prompt could not be copied. Select the text and copy it manually.')
     }
   }
 
@@ -122,7 +95,7 @@ export function SidekickPanel({
       <header className="sidekick-header">
         <div className="sidekick-identity">
           <span className="sidekick-avatar"><Bot size={18} /></span>
-          <strong>PLOT Sidekick</strong>
+          <strong>Sidekick</strong>
         </div>
         <button ref={closeButtonRef} className="icon-button sidekick-close" type="button" onClick={onClose} aria-label="Close sidekick">
           <X size={18} />
@@ -192,30 +165,25 @@ export function SidekickPanel({
                 <ArrowRight size={15} />
               </button>
 
-              <section className="sidekick-section">
-                <div className="section-heading">
-                  <span>Top signals</span>
-                </div>
+              <section className="sidekick-section" aria-label="Top signals">
                 <div className="insight-list">
                   {analysis.insights.slice(0, 2).map((insight) => (
-                    <article className={`insight-card tone-${insight.tone}`} key={insight.id}>
+                    <article
+                      className={`insight-card tone-${insight.tone}`}
+                      key={insight.id}
+                      aria-label={`${insight.title}. ${insight.detail}`}
+                      title={insight.detail}
+                    >
                       <span className="insight-icon">
                         {insight.tone === 'critical' ? <Zap size={15} /> : insight.tone === 'positive' ? <Check size={15} /> : <Lightbulb size={15} />}
                       </span>
                       <div>
                         <strong>{insight.title}</strong>
-                        <p>{insight.detail}</p>
                       </div>
                     </article>
                   ))}
                 </div>
               </section>
-
-              <button className="prompt-copy" type="button" title={demoPrompt} onClick={() => void copyPrompt()}>
-                <Bot size={14} />
-                {copied ? 'Prompt copied' : 'Copy agent prompt'}
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-              </button>
 
             </>
           )}
