@@ -5,6 +5,7 @@
   <p>
     <a href="https://plotplanner.xyz/">Try PLOT</a>
     · <a href="https://youtu.be/EtIJsp6dBow">Watch the demo</a>
+    · <a href="https://devpost.com/software/plot-vyrc2b">Devpost project</a>
     · <a href="https://webmcp.devpost.com/">The WebMCP Challenge</a>
     · <a href="docs/CHALLENGE_SUBMISSION.md">Submission kit</a>
     · <a href="docs/DEPLOYMENT.md">Deployment guide</a>

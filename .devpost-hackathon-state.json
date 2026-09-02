@@ -22,7 +22,8 @@
   "completed_stages": [
     "start-hackathon",
     "review-hackathon-rules",
-    "resources"
+    "resources",
+    "submit-project"
   ],
   "rules_acknowledged": true,
   "learning": {
@@ -34,7 +35,9 @@
   },
   "submission": {
     "draft_file": "devpost-submission.md",
-    "status": "ready"
+    "status": "submitted",
+    "url": "https://devpost.com/software/plot-vyrc2b",
+    "confirmation_id": 1157337
   },
-  "next_command": "submit-project"
+  "next_command": "hackathon-map"
 }

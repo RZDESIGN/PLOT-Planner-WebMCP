@@ -1,5 +1,5 @@
 {
-  "status": "local_draft_not_sent",
+  "status": "submitted_verified",
   "project_update": {
     "project": "1403843",
     "name": "PLOT",
@@ -72,11 +72,19 @@
     ],
     "video_url": "https://youtu.be/EtIJsp6dBow"
   },
-  "pending": [
-    "Final participant approval for Devpost project update, optional project thumbnail upload, and submission"
-  ],
+  "pending": [],
   "verification_limits": [
     "Native public apply was not executed because browser approval review requires explicit approval of its card moves; successful local apply evidence is recorded separately.",
     "Production magic-link email delivery has not been tested; the public judge flow is anonymous."
-  ]
+  ],
+  "submission_receipt": {
+    "project_id": 1403843,
+    "submission_id": 1157337,
+    "status": "Submitted",
+    "submitted_at": "2026-09-02T11:20:52.947-04:00",
+    "url": "https://devpost.com/software/plot-vyrc2b",
+    "thumbnail_url": "https://d112y698adiu2z.cloudfront.net/photos/production/software_thumbnail_photos/005/237/963/datas/medium.png",
+    "verified_live": true,
+    "description_content_verified": true
+  }
 }

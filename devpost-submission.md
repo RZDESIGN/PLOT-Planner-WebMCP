@@ -1,6 +1,6 @@
 # PLOT — Plan together
 
-> Local Devpost draft for The WebMCP Challenge. This file prepares the entry; it does not submit it.
+> Submitted to The WebMCP Challenge on September 2, 2026, with explicit participant approval and live Devpost verification. Public project: https://devpost.com/software/plot-vyrc2b. Submission ID: `1157337`.
 
 Participant: Ricardo de Zoete, Individual, Netherlands, no teammates. The prepared project description and exact form answers are in `docs/devpost/`. The public demo video is https://youtu.be/EtIJsp6dBow.
 
@@ -160,7 +160,7 @@ Current cut:
 - [x] Participant confirmed Individual, Netherlands, no teammates.
 - [x] Participant confirmed significant learning; WebMCP was new to them.
 - [x] Source scan found no high-confidence secrets. Three generic matches in `supabase/config.toml` are environment-variable references, not credential values; `.env.local` is ignored and only the publishable example is tracked.
-- [ ] Approve the final, complete entry before invoking Devpost's submission action.
+- [x] Receive explicit approval, upload the PLOT poster, submit the complete entry and verify the recorded submission through Devpost.
 
 ## Known Limitations
 

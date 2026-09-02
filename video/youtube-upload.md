@@ -47,4 +47,4 @@ Separate live verification on September 2, 2026: https://plotplanner.xyz/ loaded
 ## Publication verification
 
 - YouTube Studio confirmed that the description above was saved on September 2, 2026 after the HTTPS and public-origin checks passed.
-- The public URL is included in the prepared Devpost draft and form packet. The Devpost entry has not been submitted.
+- The public video URL is included in the verified Devpost entry: https://devpost.com/software/plot-vyrc2b (submitted September 2, 2026).

@@ -6,7 +6,7 @@ Video: https://youtu.be/EtIJsp6dBow
 
 Public source: https://github.com/RZDESIGN/PLOT-Planner-WebMCP
 
-This record distinguishes completed checks from remaining checks. It is not proof of a Devpost submission.
+This record distinguishes completed checks from additional verification. The Devpost submission was confirmed through the official connector on September 2, 2026: [PLOT](https://devpost.com/software/plot-vyrc2b), submission `1157337`, recorded at `2026-09-02T11:20:52.947-04:00`.
 
 ## HTTPS and deployed frontend
 
@@ -56,5 +56,6 @@ The password-protection advisory is described in [Supabase's documentation](http
 
 ## Submission and additional verification
 
-- The public anonymous judge flow, working app URL, narrated video and public MIT repository are available. Receive the participant's final confirmation before writing and submitting the Devpost entry.
+- After explicit participant approval, the project description, custom form answers, live URL and video were sent to Devpost. The returned status is **Submitted**; a separate project read confirmed its `submitted_at` value and published state. The description content matches the approved copy after Markdown normalization.
+- The existing PLOT poster was uploaded as the project thumbnail. Its processed CDN image returned HTTP 200.
 - Additional verification can complete the native apply test after approval of its proposed moves, and exercise production magic-link delivery. These results are not claimed by this record; the successful local apply evidence remains separately identified.

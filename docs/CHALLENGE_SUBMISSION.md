@@ -85,10 +85,13 @@ For a separate collaboration demonstration, sign in, create a sprint and invite 
 - [x] Use the anonymous public template for the deterministic live check.
 - [x] Publish the final narrated YouTube video under three minutes.
 - [x] Prepare the live URL, public repository and public video in the local submission packet.
-- [ ] Receive final approval and send the complete entry to Devpost.
+- [x] Receive final approval and submit the complete entry; Devpost confirmed submission `1157337` on September 2, 2026.
 - [x] Confirm the tracked repository contains no secret or `service_role` key.
 
 ## Current evidence
+
+- Verified Devpost project: https://devpost.com/software/plot-vyrc2b
+- The PLOT poster was uploaded as the project thumbnail and its processed image is publicly available.
 
 - Public repository: `https://github.com/RZDESIGN/PLOT-Planner-WebMCP`
 - Desktop collaboration capture: `output/playwright/collaboration-live-view-desktop.png`
