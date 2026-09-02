@@ -16,9 +16,9 @@
     "name": "PLOT",
     "summary": "A collaborative sprint-planning canvas where people and WebMCP agents shape, prioritize, and move work together.",
     "ai_usage": "Browser agents collaborate through 17 WebMCP tools; the planner itself stays deterministic and keeps mutations visible and reviewable.",
-    "codex_usage": "Codex supported implementation, refactoring, Supabase/RLS hardening, UX iteration, tests, Playwright review and submission documentation."
+    "codex_usage": "Codex supported implementation, refactoring, Supabase/RLS hardening, UX iteration, tests, Playwright review, native WebMCP checks on the public app, Remotion video production and submission documentation."
   },
-  "current_stage": "prepare-submission",
+  "current_stage": "submit-project",
   "completed_stages": [
     "start-hackathon",
     "review-hackathon-rules",
@@ -34,7 +34,7 @@
   },
   "submission": {
     "draft_file": "devpost-submission.md",
-    "status": "drafting"
+    "status": "needs-work"
   },
   "next_command": "prepare-submission"
 }

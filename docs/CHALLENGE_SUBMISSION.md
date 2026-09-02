@@ -14,49 +14,24 @@ The useful context already exists in the page: current card positions, WIP limit
 
 PLOT demonstrates the part of WebMCP that matters most for collaborative software: the agent does not merely return text. It participates in a shared, inspectable state while the human retains control.
 
-## Suggested 2–3 minute demo
+## Published 2:16 demo
 
-### 0:00–0:25 — The problem
+Watch the [public YouTube demo](https://youtu.be/EtIJsp6dBow), with English AI narration, supplied English subtitles and a PLOT thumbnail. The editable composition, narration script and capture workflow are in [`video/`](../video/README.md).
 
-- Show the four-column activation sprint.
-- Point out that `Signup flow` is blocked by `Email API`, which is still in `Next`.
-- Show that `Activation analytics` consumes five points in `Now` without unlocking the sprint goal.
+| Time | What the film shows |
+| --- | --- |
+| 0:00–0:12 | People and browser agents sharing one canvas. |
+| 0:12–0:27 | The blocked activation sprint. |
+| 0:27–0:46 | Board observation and visible Sidekick analysis. |
+| 0:46–1:03 | A customer-signal sticky becoming an Inbox card. |
+| 1:03–1:22 | Ghost proposal, followed by non-destructive dismissal. |
+| 1:22–1:42 | Applied plan, 13/13 points and focus score 92. |
+| 1:42–2:05 | The 17 tools, shared actions, persistence architecture and Codex's role. |
+| 2:05–2:16 | Closing and public repository. |
 
-### 0:25–0:50 — Observe
+The film records the real local app through its existing WebMCP tool-handler test bridge, labeled in the footage. Native WebMCP discovery and calls were verified separately in Codex's in-app browser; see the [production verification record](PRODUCTION_VERIFICATION.md). The film does not stage a signed-in multi-user session.
 
-- Open PLOT Sidekick.
-- Show focus score 69, the dependency warning, goal-fit warning, and 10/13 committed points.
-- Ask the browser agent to inspect the board using `plot.get_board` and `plot.analyze_board`.
-
-### 0:50–1:15 — Shape loose thinking
-
-- Ask the agent to place a customer signal with `plot.create_sticky_note`.
-- Drag the note into `Inbox` and show it becoming a structured card.
-- Drag the card back outside the board and show it returning to a sticky without losing metadata.
-
-### 1:15–1:45 — Suggest
-
-- Prompt: “We have three days left. Protect the sprint goal and show me a realistic plan before applying anything.”
-- Call `plot.propose_sprint`.
-- Show ghost cards, the agent cursor, page-curl motion, and the unchanged live capacity value.
-- Emphasize: this is proposed state, not hidden agent work.
-
-### 1:45–2:00 — Human control
-
-- Dismiss once and show that the board returns unchanged.
-- Propose again.
-
-### 2:00–2:30 — Act
-
-- Accept the plan through `plot.apply_proposal`.
-- Show each card move sequentially with velocity-aware landing motion.
-- Show `Now` at 13/13, the full critical path aligned in `Now`, and focus score 92.
-
-### 2:30–2:55 — Durable shared state and live view
-
-- Show an authenticated editor and an invited live viewer on the same sprint.
-- Create one new card with `plot.create_card`; show it animate for the editor and appear without refresh for the viewer.
-- Point out that the viewer's mutation controls are disabled and that Supabase RLS independently rejects writes.
+For a separate collaboration demonstration, sign in, create a sprint and invite an editor or live viewer. This feature is documented and has prior browser evidence, but it is separate from the public film.
 
 ## Official judging-criteria mapping
 
@@ -91,25 +66,26 @@ PLOT demonstrates the part of WebMCP that matters most for collaborative softwar
 
 ## Submission copy
 
-**Title:** PLOT — Plan together
+**Title:** PLOT
 
-**Tagline:** Turn ideas into a plan, together with your browser agent.
+**Tagline:** A shared planning canvas where people and browser agents turn messy work into a visible, reviewable sprint.
 
 **Description:** PLOT is a live planning canvas where humans and browser agents work in the same visible state. WebMCP exposes the active backlog, estimates, goals, dependencies, loose notes and sprint lifecycle as structured tools. The agent can diagnose planning risks and propose a dependency-aware sprint as animated ghost state. A human reviews, dismisses or accepts; approved work moves visibly and syncs through Supabase to editors and read-only live viewers.
 
 ## Launch checklist
 
 - [x] Publish the source under the MIT license at `https://github.com/RZDESIGN/PLOT-Planner-WebMCP`.
-- [ ] Deploy the production build to a public HTTPS URL.
+- [x] Deploy the production build to https://plotplanner.xyz/; HTTPS returns 200 and the canvas loads.
 - [ ] Add the production URL to Supabase Auth redirect URLs.
-- [ ] Verify all seventeen tools in the target WebMCP-capable browser and record at least one real agent call.
+- [x] Discover all seventeen tools and invoke native WebMCP calls in Codex's in-app browser on the public origin.
 - [x] Run `npm run check` on the prepared submission commit.
 - [x] Re-run the Playwright desktop and mobile smoke flows.
 - [x] Record the motion demo at 1440×900 (`output/playwright/plot-motion-demo.mp4`).
 - [x] Record the sticky/card round-trip (`output/playwright/plot-sticky-conversion-demo.mp4`).
-- [ ] Keep browser zoom at 100% and use the public template for a deterministic start.
-- [ ] Record the final public YouTube video under three minutes with spoken audio.
-- [ ] Include the live URL, public repository and public video in the submission form.
+- [x] Use the anonymous public template for the deterministic live check.
+- [x] Publish the final narrated YouTube video under three minutes.
+- [x] Prepare the live URL, public repository and public video in the local submission packet.
+- [ ] Receive final approval and send the complete entry to Devpost.
 - [x] Confirm the tracked repository contains no secret or `service_role` key.
 
 ## Current evidence
@@ -120,9 +96,11 @@ PLOT demonstrates the part of WebMCP that matters most for collaborative softwar
 - Sprint switcher capture: `output/playwright/collaboration-sprint-menu.png`
 - Current-UI board capture: `output/ux-audit/second-simplicity-pass/improved/01-desktop-board.png`
 - Current-UI proposal capture: `output/ux-audit/second-simplicity-pass/improved/04-desktop-proposal.png`
-- Rough silent recordings exist locally and are intentionally not committed; the final narrated video still needs to be published.
-- Public demo URL: **TODO after deployment**
-- Public YouTube URL with audio: **TODO**
+- Public demo URL: https://plotplanner.xyz/
+- Public YouTube URL with audio: https://youtu.be/EtIJsp6dBow
+- Editable video source: [`video/README.md`](../video/README.md)
+- Current production and Supabase verification: [`PRODUCTION_VERIFICATION.md`](PRODUCTION_VERIFICATION.md)
+- Final project copy and custom answers: [`devpost/`](devpost/)
 
 ## Submission-period evidence
 

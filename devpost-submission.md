@@ -2,6 +2,8 @@
 
 > Local Devpost draft for The WebMCP Challenge. This file prepares the entry; it does not submit it.
 
+Participant: Ricardo de Zoete, Individual, Netherlands, no teammates. The prepared project description and exact form answers are in `docs/devpost/`. The public demo video is https://youtu.be/EtIJsp6dBow.
+
 ## One-line Summary
 
 PLOT is a shared planning canvas where humans and browser agents turn messy work into a visible, reviewable, dependency-aware sprint.
@@ -16,7 +18,7 @@ That gap becomes more serious when several people share a board. Hidden agent wo
 
 PLOT gives people and browser agents one shared, visual planning state. Humans can drag cards and loose sticky notes; an agent can inspect the same structured board through WebMCP, add or reshape work, link blockers, create or switch sprints and propose a dependency-aware plan.
 
-The key interaction is an explicit observe → suggest → act loop. A multi-card recommendation first appears as animated ghost cards. The live board remains unchanged until a human accepts it, and dismissal is non-destructive. Approved changes animate into place, persist to Supabase and appear for editors and read-only live viewers in realtime.
+The key interaction is an explicit observe → suggest → act loop. A multi-card recommendation first appears as animated ghost cards. The live board remains unchanged until a separate apply action, and dismissal is non-destructive. A person can review and apply in the UI, or ask an agent to apply through WebMCP. Applied changes animate into place, persist to Supabase for signed-in users and appear for editors and read-only live viewers in realtime.
 
 ## Why This Matters
 
@@ -42,13 +44,17 @@ The agent can:
 
 Codex was used throughout the challenge build to scaffold and refactor the React/TypeScript frontend, develop the WebMCP tool surface, model the Supabase schema and RLS policies, debug session persistence and share links, improve drag geometry and motion, simplify the Sidekick, rebalance typography and responsive layout, write regression tests and conduct Playwright-based UX reviews.
 
-It also helped turn the verified implementation into this README and Devpost draft. Claims in this document are grounded in the repository, migrations, tests, screenshots and dated commits rather than generated feature promises.
+It also helped prepare the documentation, this Devpost draft and a Remotion demo with English AI narration. On September 2, 2026, Codex's in-app browser discovered all 17 native page-defined WebMCP tools at `https://plotplanner.xyz/`. Board reads, analysis, sticky creation, sticky-to-card conversion, proposal and dismissal calls succeeded on that public origin. Claims in this document are grounded in the repository, migrations, tests, screenshots and dated commits rather than generated feature promises.
+
+## What I Learned
+
+I built PLOT as an individual based in the Netherlands. WebMCP was new to me. I gained significant practical experience in exposing an application's state and actions to browser agents, designing structured tools, and making agent-driven changes visible and reviewable. This also gave me useful AI development experience for my work.
 
 ## Key Features
 
 - Seventeen imperative WebMCP tools with constrained JSON schemas and structured results.
 - Observe, suggest and act modes with read-only annotations for observation tools.
-- Animated ghost proposals that require a separate human apply action.
+- Animated ghost proposals with a separate, explicit apply or dismiss action.
 - A four-column sprint canvas with capacity, focus score and visible critical path.
 - Freeform sticky notes around the board with bidirectional sticky ↔ card conversion.
 - Lossless card round-trips that retain estimates, priority, labels, owner, goal and due date.
@@ -69,13 +75,13 @@ No separate MCP server is required: `document.modelContext.registerTool()` regis
 
 ### Public judge flow
 
-1. Open the public URL in ChatGPT's in-app browser or Chrome 149+ with WebMCP enabled.
+1. Open https://plotplanner.xyz/ in a WebMCP-capable browser. Native discovery, reads, sticky/card conversion, proposal and dismissal have been verified on this public origin in Codex's in-app browser.
 2. Use the anonymous activation sprint; no account is required for the core deterministic demo.
 3. Ask the agent to call `plot.get_board` and `plot.analyze_board`.
 4. Ask it to add a customer signal with `plot.create_sticky_note`, then shape it with `plot.convert_sticky_to_card`.
 5. Ask: “We have three days left. Protect the sprint goal and show me a realistic plan before applying anything.”
 6. Run `plot.propose_sprint`; verify that ghost cards appear while the live totals remain unchanged.
-7. Dismiss once with `plot.dismiss_proposal`, propose again, then call `plot.apply_proposal`.
+7. Dismiss once with `plot.dismiss_proposal`, propose again, review the ghost changes, then explicitly ask the agent to call `plot.apply_proposal` (or click Apply in the UI).
 8. Verify that `Now` becomes 13/13 points and the focus score changes from 69 to 92.
 
 ### Collaboration flow
@@ -95,7 +101,9 @@ Open `http://localhost:5173`. The checked-in Supabase publishable key can load t
 
 ## Public Demo Link
 
-**TODO — deploy the production `dist/` build to the final HTTPS Hostinger URL, configure that exact URL in Supabase Auth, and paste it here.**
+https://plotplanner.xyz/
+
+The Hostinger deployment returned HTTP 200 over HTTPS on September 2, 2026 and loaded the anonymous activation sprint in a browser. Its served bundle includes the proposal-application fix, the canonical domain and the expected Supabase project. Native WebMCP checks also passed on the public origin. Hosted authentication URL settings still await dashboard access. See `docs/PRODUCTION_VERIFICATION.md` for the dated results and `docs/DEPLOYMENT.md` for configuration.
 
 ## Public Repository Link
 
@@ -105,18 +113,24 @@ The repository is publicly reachable and includes an MIT `LICENSE` file at its r
 
 ## Demo Video
 
-**TODO — publish a narrated, public YouTube video shorter than three minutes and paste its URL here.**
+**Public YouTube demo:** https://youtu.be/EtIJsp6dBow — published on September 2, 2026 on [@RicardoDeZoete](https://www.youtube.com/@RicardoDeZoete), with the participant's authorization. The upload includes a PLOT thumbnail, supplied English captions and AI narration disclosure. YouTube reported no copyright problems; the public player played the video and displayed English captions.
 
-Suggested outline:
+**Local source:** `output/playwright/plot-devpost-remotion.mp4` — approximately 2:16, 1920 × 1080 at 30 fps, with English AI narration and timed captions. Editable source and reproduction instructions are in `video/README.md`; the script is in `video/src/story.json`. Publication copy is recorded in `video/youtube-upload.md`.
 
-- **0:00–0:15:** Start with an agent-authored change visibly appearing on the canvas.
-- **0:15–0:35:** Explain the gap between planning advice in chat and durable board state.
-- **0:35–1:05:** Call the read and analysis tools; show the dependency and capacity problem.
-- **1:05–1:30:** Create a sticky note and convert it into a card.
-- **1:30–2:05:** Show the ghost proposal, dismiss it and prove that live state did not change.
-- **2:05–2:30:** Apply the proposal and show the improved 13/13 plan and focus score.
-- **2:30–2:50:** Show the same update arriving for a live viewer and explain Supabase/RLS.
-- **2:50–2:58:** Close on why WebMCP makes this shared workflow possible.
+The footage shows the real local app through its existing WebMCP tool-handler test bridge. It is labeled accordingly and does not claim to be a recording of an external browser agent or an authenticated collaboration session.
+
+Native WebMCP was separately verified through Codex's in-app browser on September 2, 2026 at both the local and public origins. On `https://plotplanner.xyz/`, all 17 tools were discovered; reads, analysis, sticky creation, conversion, proposal and dismissal succeeded. The final native apply check awaits explicit approval of its three card moves. The film's successful apply recording uses the local tool-handler bridge, as labeled.
+
+Current cut:
+
+- **0:00–0:12:** Introduce PLOT: people, agents, one shared canvas.
+- **0:12–0:27:** Show the blocked activation sprint.
+- **0:27–0:46:** Inspect the board and visible Sidekick analysis.
+- **0:46–1:03:** Create a customer-signal sticky and convert it into a card.
+- **1:03–1:22:** Preview the ghost plan, then dismiss it without changing the board.
+- **1:22–1:42:** Apply the plan and show 13/13 points and focus score 92.
+- **1:42–2:05:** Explain the 17 page tools, shared actions, persistence architecture, and Codex's role.
+- **2:05–2:16:** Close on shared action and the public repository.
 
 ## Screenshot Shot List
 
@@ -134,36 +148,44 @@ Suggested outline:
 - [x] Seventeen WebMCP registrations exist in the frontend source.
 - [x] Supabase migrations, RLS policies and local setup instructions are included.
 - [x] Current desktop, proposal, collaboration and mobile screenshots are committed.
-- [ ] Deploy and verify the final HTTPS URL in a clean browser profile.
+- [x] Final domain supplied: https://plotplanner.xyz/ (Hostinger).
+- [x] Verify the final HTTPS URL and anonymous guest board on the public Hostinger deployment.
 - [ ] Add the final origin to the Supabase Site URL and redirect allow-list.
-- [ ] Verify at least one real tool call in ChatGPT's in-app browser or Chrome 149+ with WebMCP enabled.
-- [ ] Publish the narrated public YouTube demo under three minutes.
-- [ ] Add every teammate to Devpost and confirm acceptance.
-- [ ] Replace all remaining TODO values below before final submission.
+- [x] Verify real native WebMCP tool calls in Codex's in-app browser at the local origin: 17 tools discovered; board and analysis calls succeeded.
+- [x] Discover all 17 tools and execute native read, analysis, sticky/card, proposal and dismissal calls on the public origin.
+- [ ] Complete the native public apply test after explicit approval of the three proposed card moves.
+- [x] Publish the proposal-application fix and editable video source to the public repository: commit `c5b685c87ebd7da57ce23a075d98cb1551b2c821`, pushed to `main` and confirmed on the remote.
+- [x] Verify the served production bundle includes the proposal fix and correct production configuration.
+- [x] Publish the narrated public YouTube demo under three minutes, with English subtitles.
+- [x] Participant confirmed Individual, Netherlands, no teammates.
+- [x] Participant confirmed significant learning; WebMCP was new to them.
+- [x] Source scan found no high-confidence secrets. Three generic matches in `supabase/config.toml` are environment-variable references, not credential values; `.env.local` is ignored and only the publishable example is tracked.
+- [ ] Approve the final, complete entry before invoking Devpost's submission action.
 
 ## Known Limitations
 
-- The public Hostinger URL and final Supabase production redirect configuration are not yet recorded in this repository.
-- The existing Playwright evidence exercises the real UI and page-level WebMCP tool bridge; final verification in the target WebMCP-capable browser remains required.
+- Hosted Supabase Site URL, redirect allow-list and end-to-end production magic-link login still await dashboard access. The project is healthy, all 11 migrations match and all 11 application tables have RLS enabled.
+- Public native discovery, reads, sticky/card conversion, proposal and dismissal passed. The final native apply call was blocked before execution by browser approval review and awaits the participant's approval of its exact card moves. The narrated film and automated apply evidence use the real UI and page-level tool-handler bridge.
 - Anonymous visitors can explore the deterministic template, but persistent multi-user collaboration requires magic-link authentication.
-- Final YouTube narration and public video hosting are still outstanding.
+- The apply step is separate from the proposal step, but it is callable by an authorized agent; the application does not independently prove that a human has reviewed the proposal.
+- The public video's description now reflects the live HTTPS deployment and completed native checks. The film does not stage a multi-user session.
 
-## TODO Official Form Fields
+## Official Form Fields
 
 | Official field | Draft value |
 | --- | --- |
-| Submitter Type | **TODO — choose Individual, Team of Individuals or Organization.** |
-| Country of residence | **TODO — confirm for every submitter/team member.** |
-| Organization name | Leave blank unless submitting for an organization. |
+| Submitter Type | **Individual** — confirmed by the participant. |
+| Country of residence | **Netherlands** — sole participant; confirmed. |
+| Organization name | Leave blank. |
 | App Status | **New** |
 | Existing-project update explanation | Not applicable; the first commit is dated August 31, 2026. |
-| Live URL | **TODO — final public HTTPS URL.** |
+| Live URL | https://plotplanner.xyz/ — live over HTTPS; public native WebMCP checks passed on September 2, 2026. |
 | Testing instructions | Use the public judge flow above; add credentials only if the final deployment requires them. |
 | Public repository | https://github.com/RZDESIGN/PLOT-Planner-WebMCP |
-| Agent(s) or client(s) tested | **TODO — record the final successful ChatGPT in-app browser and/or Chrome 149+ WebMCP test. Current automated evidence uses the page tool bridge.** |
-| AI tools leveraged | OpenAI Codex for implementation, refactoring, testing, UX review and submission preparation; a WebMCP browser agent for the final product demonstration once verified. |
-| Level of learning | **Suggested: Significant — confirm before submission.** |
-| Career-relevant AI value | **Suggested: Yes — confirm before submission.** |
+| Agent(s) or client(s) tested | Codex's in-app browser on https://plotplanner.xyz/: all 17 native tools discovered; board, analysis, sticky creation/conversion, proposal and dismissal calls succeeded on September 2, 2026. Playwright separately exercises the real UI and tool-handler bridge, including apply. Native public apply awaits approval of the proposed moves. |
+| AI tools leveraged | OpenAI Codex for implementation, refactoring, tests, UX review, native WebMCP verification and submission preparation. Remotion for the demo edit; Microsoft Edge en-US-AriaNeural via edge-tts for English AI narration. |
+| Level of learning | **Significant** — WebMCP was new to the participant. |
+| Career-relevant AI value | **Yes** |
 
 ## Official Judging Alignment
 

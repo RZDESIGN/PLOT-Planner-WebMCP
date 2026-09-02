@@ -40,12 +40,11 @@ The WebMCP Challenge: https://webmcp.devpost.com/
 
 Built by Ricardo de Zoete with OpenAI Codex. Frontend: React, TypeScript and Vite. Persistence and collaboration: Supabase. Video: Remotion, with English AI narration generated using Microsoft Edge en-US-AriaNeural via edge-tts.
 
-Recording note: this video shows the real local application through its WebMCP tool-handler test bridge, labeled in the footage. Native WebMCP was separately verified in Codex's in-app browser at localhost on September 2, 2026: all 17 tools were discovered and board/analysis calls succeeded. The film does not show a live multi-user collaboration session.
+Recording note: this video shows the real local application through its WebMCP tool-handler test bridge, labeled in the footage. The film does not show a live multi-user collaboration session.
 
-Website status at upload: the Hostinger domain is still waiting for public DNS to resolve.
+Separate live verification on September 2, 2026: https://plotplanner.xyz/ loaded over HTTPS. Codex's in-app browser discovered all 17 native WebMCP tools and successfully read and analyzed the board, created a sticky note, converted it into a card, and proposed and dismissed a sprint plan without changing the live board.
 
-## Follow-up
+## Publication verification
 
-- Confirm the final website is publicly reachable; the domain was still waiting for DNS at upload.
-- Update the website-status sentence after public-origin verification passes.
-- Keep this URL in the Devpost draft and final form.
+- YouTube Studio confirmed that the description above was saved on September 2, 2026 after the HTTPS and public-origin checks passed.
+- The public URL is included in the prepared Devpost draft and form packet. The Devpost entry has not been submitted.

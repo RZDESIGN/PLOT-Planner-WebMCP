@@ -2,6 +2,8 @@
 
 PLOT is a static React/Vite frontend backed by the hosted Supabase project. WebMCP lives in the browser bundle; no separate MCP server or Node process is required in production.
 
+The production app is https://plotplanner.xyz/. See [the dated production verification record](PRODUCTION_VERIFICATION.md) for completed checks and remaining authentication checks.
+
 ## 1. Build the production bundle
 
 ```bash
@@ -77,6 +79,8 @@ In the Supabase dashboard, open **Authentication → URL Configuration**:
 1. Set **Site URL** to `https://plotplanner.xyz/`, matching `VITE_PUBLIC_APP_URL`.
 2. Add `https://plotplanner.xyz/` to **Redirect URLs**.
 3. Keep the local development redirect only if it is still needed.
+
+The checked-in `supabase/config.toml` configures local development at `http://localhost:5173/`. It does not update hosted Auth settings. Change only the hosted URL fields needed for this deployment and preserve other project settings.
 
 Magic-link login uses a one-time PKCE code and returns to the canonical frontend while preserving only the `board` and `invite` context. This step is required for collaboration outside localhost. Open the link in the same browser that requested it so the PKCE verifier is available.
 

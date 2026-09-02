@@ -3,7 +3,9 @@
   <h1>PLOT</h1>
   <p><strong>A shared planning canvas for humans and browser agents.</strong></p>
   <p>
-    <a href="https://webmcp.devpost.com/">The WebMCP Challenge</a>
+    <a href="https://plotplanner.xyz/">Try PLOT</a>
+    · <a href="https://youtu.be/EtIJsp6dBow">Watch the demo</a>
+    · <a href="https://webmcp.devpost.com/">The WebMCP Challenge</a>
     · <a href="docs/CHALLENGE_SUBMISSION.md">Submission kit</a>
     · <a href="docs/DEPLOYMENT.md">Deployment guide</a>
     · <a href="https://github.com/RZDESIGN/PLOT-Planner-WebMCP">Public repository</a>
@@ -22,7 +24,9 @@ Planning tools usually separate conversation from state. An agent can recommend 
 
 1. **Observe** — inspect cards, capacity, priorities, and blocking relationships.
 2. **Suggest** — render a complete plan as animated ghost cards without changing live state.
-3. **Act** — apply only after explicit human review, then persist and broadcast the result.
+3. **Act** — use a separate apply step after review, then persist and broadcast the result for signed-in workspaces.
+
+The apply action is available in both the UI and WebMCP. The application separates preview from execution; it does not independently prove that a person reviewed a proposal.
 
 The sample activation sprint is intentionally imperfect: a critical dependency sits outside `Now`, five points do not protect the sprint goal, and the team has three points of apparent capacity. This gives the agent a useful planning problem to solve rather than a decorative demo.
 
@@ -118,7 +122,7 @@ Requirements:
 - A WebMCP-capable browser for tool discovery; the UI itself runs in any modern browser
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
@@ -182,7 +186,7 @@ Then update `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.loc
 
 All application tables have RLS enabled. Anonymous visitors can only read the seeded public template. Owners and editors can mutate a shared sprint; viewers can read it and receive the same Realtime updates but cannot write through the UI, WebMCP, REST, or RPC layer. A magic-link sign-in uses PKCE, persists the resulting session in the browser, and turns the explored board into the user's first private sprint. One-use invitation tokens are stored only as SHA-256 hashes, expire after seven days, and may optionally be locked to an email address.
 
-For production, add the deployed URL to **Authentication → URL Configuration → Redirect URLs** in the Supabase dashboard.
+The production frontend is [plotplanner.xyz](https://plotplanner.xyz/). Its authentication Site URL and redirect allow-list must use that canonical HTTPS origin. The local Supabase configuration uses the Vite development origin, `http://localhost:5173/`; it is not a production configuration to push wholesale. See [the deployment guide](docs/DEPLOYMENT.md) for the exact settings and verification record.
 
 ## Collaboration, live view, and sprints
 
@@ -216,7 +220,9 @@ The complete production checklist is in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.m
 
 ## Testing and review
 
-Pure board rules have Node regression coverage in `tests/boardModel.test.ts`. End-to-end review uses the Playwright CLI against the real page and WebMCP page bridge. Tracked review artifacts include full-screen desktop, mobile overview, mobile Sidekick, proposal, applied-plan, collaboration, zoom/pan, and in-motion drag screenshots under `output/`. Local recordings and browser traces remain ignored so the public repository stays lean; the final narrated demo will be linked from the Devpost entry.
+Pure board rules have Node regression coverage in `tests/boardModel.test.ts`. Automated review uses the Playwright CLI against the real page and its WebMCP tool-handler bridge. Native page-defined WebMCP was also tested separately in Codex's in-app browser, locally and on the public HTTPS site. The current production checks are recorded in [docs/PRODUCTION_VERIFICATION.md](docs/PRODUCTION_VERIFICATION.md).
+
+Tracked review artifacts include desktop, mobile, proposal, applied-plan, collaboration, zoom/pan and in-motion drag screenshots under `output/`. The [public narrated demo](https://youtu.be/EtIJsp6dBow) is 2:16 long with English AI narration and supplied subtitles. Its real app footage uses the tool-handler bridge, as labeled in the film. The [editable Remotion source](video/README.md) is included; generated media and browser traces remain ignored.
 
 Verified flows:
 
