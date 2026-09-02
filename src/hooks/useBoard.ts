@@ -163,11 +163,11 @@ export function useBoard() {
     setAccessRole(next)
   }, [])
 
-  const assertBoardWritable = useCallback(() => {
+  const assertBoardWritable = useCallback(({ resolvingProposal = false } = {}) => {
     if (accessRoleRef.current === 'viewer') {
       throw new Error('This sprint is in live view mode. Ask an owner for edit access to make changes.')
     }
-    if (proposalRef.current) {
+    if (proposalRef.current && !resolvingProposal) {
       throw new Error('Resolve the visible proposal before making another board change.')
     }
   }, [])
@@ -1074,7 +1074,7 @@ export function useBoard() {
 
   const applyProposal = useCallback(
     async (proposalId?: string) => {
-      assertBoardWritable()
+      assertBoardWritable({ resolvingProposal: true })
       const currentProposal = proposalRef.current
       if (!currentProposal || (proposalId && currentProposal.id !== proposalId)) {
         throw new Error('There is no matching draft proposal to apply.')

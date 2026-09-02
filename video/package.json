@@ -1,0 +1,23 @@
+{
+  "name": "plot-devpost-video",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts PlotDemo ../output/playwright/plot-devpost-remotion.mp4 --codec=h264 --crf=18 --concurrency=4 && node scripts/normalize-audio.mjs",
+    "still": "remotion still src/index.ts PlotDemo ../output/playwright/remotion-review/poster.png --frame=90",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.520",
+    "remotion": "4.0.520",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  }
+}

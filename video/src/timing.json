@@ -1,0 +1,1458 @@
+[
+  {
+    "id": "intro",
+    "audioDuration": 10.176,
+    "frames": 347,
+    "words": [
+      {
+        "text": "Meet",
+        "start": 0.1,
+        "end": 0.4375
+      },
+      {
+        "text": "PLOT.",
+        "start": 0.45,
+        "end": 0.9625
+      },
+      {
+        "text": "A",
+        "start": 1.825,
+        "end": 1.95
+      },
+      {
+        "text": "shared",
+        "start": 1.9625,
+        "end": 2.3125
+      },
+      {
+        "text": "planning",
+        "start": 2.325,
+        "end": 2.675
+      },
+      {
+        "text": "canvas",
+        "start": 2.6875,
+        "end": 3.2125
+      },
+      {
+        "text": "where",
+        "start": 3.225,
+        "end": 3.375
+      },
+      {
+        "text": "people",
+        "start": 3.3875,
+        "end": 3.7375
+      },
+      {
+        "text": "and",
+        "start": 3.75,
+        "end": 3.85
+      },
+      {
+        "text": "browser",
+        "start": 3.8625,
+        "end": 4.2875
+      },
+      {
+        "text": "agents",
+        "start": 4.3,
+        "end": 4.7125
+      },
+      {
+        "text": "turn",
+        "start": 4.725,
+        "end": 4.95
+      },
+      {
+        "text": "a",
+        "start": 4.9625,
+        "end": 5.0
+      },
+      {
+        "text": "messy",
+        "start": 5.0125,
+        "end": 5.3375
+      },
+      {
+        "text": "backlog",
+        "start": 5.35,
+        "end": 5.9125
+      },
+      {
+        "text": "into",
+        "start": 5.925,
+        "end": 6.1125
+      },
+      {
+        "text": "a",
+        "start": 6.125,
+        "end": 6.2
+      },
+      {
+        "text": "plan",
+        "start": 6.2125,
+        "end": 6.625
+      },
+      {
+        "text": "everyone",
+        "start": 6.6375,
+        "end": 7.05
+      },
+      {
+        "text": "can",
+        "start": 7.0625,
+        "end": 7.25
+      },
+      {
+        "text": "see,",
+        "start": 7.2625,
+        "end": 7.5125
+      },
+      {
+        "text": "review,",
+        "start": 7.725,
+        "end": 8.125
+      },
+      {
+        "text": "and",
+        "start": 8.3,
+        "end": 8.4625
+      },
+      {
+        "text": "shape",
+        "start": 8.475,
+        "end": 8.7625
+      },
+      {
+        "text": "together.",
+        "start": 8.775,
+        "end": 9.3
+      }
+    ]
+  },
+  {
+    "id": "problem",
+    "audioDuration": 14.136,
+    "frames": 466,
+    "words": [
+      {
+        "text": "This",
+        "start": 0.1,
+        "end": 0.4
+      },
+      {
+        "text": "sprint",
+        "start": 0.4125,
+        "end": 0.7375
+      },
+      {
+        "text": "looks",
+        "start": 0.75,
+        "end": 1.0125
+      },
+      {
+        "text": "busy,",
+        "start": 1.025,
+        "end": 1.3875
+      },
+      {
+        "text": "but",
+        "start": 1.575,
+        "end": 1.7
+      },
+      {
+        "text": "the",
+        "start": 1.7125,
+        "end": 1.8125
+      },
+      {
+        "text": "plan",
+        "start": 1.825,
+        "end": 2.1375
+      },
+      {
+        "text": "is",
+        "start": 2.15,
+        "end": 2.2625
+      },
+      {
+        "text": "blocked.",
+        "start": 2.275,
+        "end": 2.8125
+      },
+      {
+        "text": "Signup",
+        "start": 3.675,
+        "end": 4.1625
+      },
+      {
+        "text": "flow",
+        "start": 4.175,
+        "end": 4.4375
+      },
+      {
+        "text": "needs",
+        "start": 4.45,
+        "end": 4.7125
+      },
+      {
+        "text": "Email",
+        "start": 4.725,
+        "end": 5.1875
+      },
+      {
+        "text": "API,",
+        "start": 5.2,
+        "end": 5.75
+      },
+      {
+        "text": "which",
+        "start": 6.0375,
+        "end": 6.175
+      },
+      {
+        "text": "is",
+        "start": 6.1875,
+        "end": 6.3
+      },
+      {
+        "text": "still",
+        "start": 6.3125,
+        "end": 6.5625
+      },
+      {
+        "text": "in",
+        "start": 6.575,
+        "end": 6.6875
+      },
+      {
+        "text": "Next.",
+        "start": 6.7,
+        "end": 7.2125
+      },
+      {
+        "text": "Meanwhile,",
+        "start": 8.075,
+        "end": 8.775
+      },
+      {
+        "text": "five",
+        "start": 9.025,
+        "end": 9.3375
+      },
+      {
+        "text": "points",
+        "start": 9.35,
+        "end": 9.6875
+      },
+      {
+        "text": "of",
+        "start": 9.7,
+        "end": 9.775
+      },
+      {
+        "text": "analytics",
+        "start": 9.7875,
+        "end": 10.425
+      },
+      {
+        "text": "work",
+        "start": 10.4375,
+        "end": 10.75
+      },
+      {
+        "text": "do",
+        "start": 10.7625,
+        "end": 10.875
+      },
+      {
+        "text": "not",
+        "start": 10.8875,
+        "end": 11.1625
+      },
+      {
+        "text": "directly",
+        "start": 11.175,
+        "end": 11.6
+      },
+      {
+        "text": "protect",
+        "start": 11.6125,
+        "end": 12.1
+      },
+      {
+        "text": "the",
+        "start": 12.1125,
+        "end": 12.2
+      },
+      {
+        "text": "activation",
+        "start": 12.2125,
+        "end": 12.875
+      },
+      {
+        "text": "goal.",
+        "start": 12.8875,
+        "end": 13.2625
+      }
+    ]
+  },
+  {
+    "id": "observe",
+    "audioDuration": 17.088,
+    "frames": 555,
+    "words": [
+      {
+        "text": "Web",
+        "start": 0.1,
+        "end": 0.4
+      },
+      {
+        "text": "MCP",
+        "start": 0.4125,
+        "end": 1.0875
+      },
+      {
+        "text": "exposes",
+        "start": 1.1,
+        "end": 1.65
+      },
+      {
+        "text": "the",
+        "start": 1.6625,
+        "end": 1.7625
+      },
+      {
+        "text": "board",
+        "start": 1.775,
+        "end": 2.05
+      },
+      {
+        "text": "as",
+        "start": 2.0625,
+        "end": 2.175
+      },
+      {
+        "text": "structured",
+        "start": 2.1875,
+        "end": 2.65
+      },
+      {
+        "text": "tools.",
+        "start": 2.6625,
+        "end": 3.225
+      },
+      {
+        "text": "Read",
+        "start": 4.0875,
+        "end": 4.4
+      },
+      {
+        "text": "the",
+        "start": 4.4125,
+        "end": 4.5
+      },
+      {
+        "text": "cards,",
+        "start": 4.5125,
+        "end": 4.9625
+      },
+      {
+        "text": "estimates,",
+        "start": 5.125,
+        "end": 5.7
+      },
+      {
+        "text": "dependencies,",
+        "start": 5.8625,
+        "end": 6.75
+      },
+      {
+        "text": "and",
+        "start": 6.8875,
+        "end": 7.0625
+      },
+      {
+        "text": "sprint",
+        "start": 7.075,
+        "end": 7.4
+      },
+      {
+        "text": "goal,",
+        "start": 7.4125,
+        "end": 7.775
+      },
+      {
+        "text": "then",
+        "start": 7.9125,
+        "end": 8.1625
+      },
+      {
+        "text": "analyze",
+        "start": 8.175,
+        "end": 8.6875
+      },
+      {
+        "text": "the",
+        "start": 8.7,
+        "end": 8.8
+      },
+      {
+        "text": "plan.",
+        "start": 8.8125,
+        "end": 9.3
+      },
+      {
+        "text": "Sidekick",
+        "start": 10.1625,
+        "end": 10.8
+      },
+      {
+        "text": "makes",
+        "start": 10.8125,
+        "end": 11.075
+      },
+      {
+        "text": "those",
+        "start": 11.0875,
+        "end": 11.3
+      },
+      {
+        "text": "same",
+        "start": 11.3125,
+        "end": 11.5625
+      },
+      {
+        "text": "issues",
+        "start": 11.575,
+        "end": 11.9875
+      },
+      {
+        "text": "visible",
+        "start": 12.0,
+        "end": 12.3875
+      },
+      {
+        "text": "to",
+        "start": 12.4,
+        "end": 12.475
+      },
+      {
+        "text": "the",
+        "start": 12.4875,
+        "end": 12.5625
+      },
+      {
+        "text": "human.",
+        "start": 12.575,
+        "end": 13.075
+      },
+      {
+        "text": "The",
+        "start": 13.95,
+        "end": 14.125
+      },
+      {
+        "text": "starting",
+        "start": 14.1375,
+        "end": 14.5375
+      },
+      {
+        "text": "focus",
+        "start": 14.55,
+        "end": 14.925
+      },
+      {
+        "text": "score",
+        "start": 14.9375,
+        "end": 15.25
+      },
+      {
+        "text": "is",
+        "start": 15.2625,
+        "end": 15.4
+      },
+      {
+        "text": "sixty",
+        "start": 15.4125,
+        "end": 15.7625
+      },
+      {
+        "text": "nine.",
+        "start": 15.775,
+        "end": 16.2125
+      }
+    ]
+  },
+  {
+    "id": "shape",
+    "audioDuration": 15.648,
+    "frames": 511,
+    "words": [
+      {
+        "text": "Planning",
+        "start": 0.1,
+        "end": 0.525
+      },
+      {
+        "text": "starts",
+        "start": 0.5375,
+        "end": 0.925
+      },
+      {
+        "text": "before",
+        "start": 0.9375,
+        "end": 1.275
+      },
+      {
+        "text": "a",
+        "start": 1.2875,
+        "end": 1.3375
+      },
+      {
+        "text": "task",
+        "start": 1.35,
+        "end": 1.775
+      },
+      {
+        "text": "is",
+        "start": 1.7875,
+        "end": 1.925
+      },
+      {
+        "text": "ready.",
+        "start": 1.9375,
+        "end": 2.35
+      },
+      {
+        "text": "Capture",
+        "start": 3.2125,
+        "end": 3.6875
+      },
+      {
+        "text": "a",
+        "start": 3.7,
+        "end": 3.75
+      },
+      {
+        "text": "customer",
+        "start": 3.7625,
+        "end": 4.2375
+      },
+      {
+        "text": "signal",
+        "start": 4.25,
+        "end": 4.7625
+      },
+      {
+        "text": "as",
+        "start": 4.775,
+        "end": 4.8625
+      },
+      {
+        "text": "a",
+        "start": 4.875,
+        "end": 4.95
+      },
+      {
+        "text": "loose",
+        "start": 4.9625,
+        "end": 5.2125
+      },
+      {
+        "text": "sticky",
+        "start": 5.225,
+        "end": 5.5375
+      },
+      {
+        "text": "note.",
+        "start": 5.55,
+        "end": 5.9875
+      },
+      {
+        "text": "When",
+        "start": 6.85,
+        "end": 7.0625
+      },
+      {
+        "text": "it",
+        "start": 7.075,
+        "end": 7.15
+      },
+      {
+        "text": "has",
+        "start": 7.1625,
+        "end": 7.4
+      },
+      {
+        "text": "enough",
+        "start": 7.4125,
+        "end": 7.65
+      },
+      {
+        "text": "shape,",
+        "start": 7.6625,
+        "end": 8.075
+      },
+      {
+        "text": "move",
+        "start": 8.25,
+        "end": 8.5125
+      },
+      {
+        "text": "it",
+        "start": 8.525,
+        "end": 8.625
+      },
+      {
+        "text": "into",
+        "start": 8.6375,
+        "end": 8.825
+      },
+      {
+        "text": "the",
+        "start": 8.8375,
+        "end": 8.9625
+      },
+      {
+        "text": "sprint",
+        "start": 8.975,
+        "end": 9.325
+      },
+      {
+        "text": "as",
+        "start": 9.3375,
+        "end": 9.425
+      },
+      {
+        "text": "a",
+        "start": 9.4375,
+        "end": 9.5
+      },
+      {
+        "text": "card.",
+        "start": 9.5125,
+        "end": 9.9875
+      },
+      {
+        "text": "People",
+        "start": 10.85,
+        "end": 11.225
+      },
+      {
+        "text": "can",
+        "start": 11.2375,
+        "end": 11.3875
+      },
+      {
+        "text": "drag",
+        "start": 11.4,
+        "end": 11.7
+      },
+      {
+        "text": "it;",
+        "start": 11.7125,
+        "end": 11.9
+      },
+      {
+        "text": "agents",
+        "start": 12.225,
+        "end": 12.675
+      },
+      {
+        "text": "can",
+        "start": 12.6875,
+        "end": 12.85
+      },
+      {
+        "text": "call",
+        "start": 12.8625,
+        "end": 13.0875
+      },
+      {
+        "text": "the",
+        "start": 13.1,
+        "end": 13.2
+      },
+      {
+        "text": "same",
+        "start": 13.2125,
+        "end": 13.5
+      },
+      {
+        "text": "underlying",
+        "start": 13.5125,
+        "end": 14.0875
+      },
+      {
+        "text": "actions.",
+        "start": 14.1,
+        "end": 14.775
+      }
+    ]
+  },
+  {
+    "id": "propose",
+    "audioDuration": 18.0,
+    "frames": 582,
+    "words": [
+      {
+        "text": "Now",
+        "start": 0.1,
+        "end": 0.4125
+      },
+      {
+        "text": "preview",
+        "start": 0.425,
+        "end": 0.85
+      },
+      {
+        "text": "a",
+        "start": 0.8625,
+        "end": 0.9375
+      },
+      {
+        "text": "plan",
+        "start": 0.95,
+        "end": 1.3
+      },
+      {
+        "text": "that",
+        "start": 1.3125,
+        "end": 1.45
+      },
+      {
+        "text": "protects",
+        "start": 1.4625,
+        "end": 1.95
+      },
+      {
+        "text": "the",
+        "start": 1.9625,
+        "end": 2.075
+      },
+      {
+        "text": "sprint",
+        "start": 2.0875,
+        "end": 2.4
+      },
+      {
+        "text": "goal.",
+        "start": 2.4125,
+        "end": 2.8125
+      },
+      {
+        "text": "Ghost",
+        "start": 3.6875,
+        "end": 4.0625
+      },
+      {
+        "text": "cards",
+        "start": 4.075,
+        "end": 4.425
+      },
+      {
+        "text": "show",
+        "start": 4.4375,
+        "end": 4.725
+      },
+      {
+        "text": "what",
+        "start": 4.7375,
+        "end": 4.875
+      },
+      {
+        "text": "would",
+        "start": 4.8875,
+        "end": 5.025
+      },
+      {
+        "text": "move",
+        "start": 5.0375,
+        "end": 5.3125
+      },
+      {
+        "text": "and",
+        "start": 5.325,
+        "end": 5.425
+      },
+      {
+        "text": "why.",
+        "start": 5.4375,
+        "end": 5.8625
+      },
+      {
+        "text": "The",
+        "start": 6.7375,
+        "end": 6.9
+      },
+      {
+        "text": "committed",
+        "start": 6.9125,
+        "end": 7.3375
+      },
+      {
+        "text": "board",
+        "start": 7.35,
+        "end": 7.6375
+      },
+      {
+        "text": "is",
+        "start": 7.65,
+        "end": 7.75
+      },
+      {
+        "text": "still",
+        "start": 7.7625,
+        "end": 8.0375
+      },
+      {
+        "text": "unchanged.",
+        "start": 8.05,
+        "end": 8.8125
+      },
+      {
+        "text": "Dismiss",
+        "start": 9.675,
+        "end": 10.15
+      },
+      {
+        "text": "the",
+        "start": 10.1625,
+        "end": 10.275
+      },
+      {
+        "text": "proposal,",
+        "start": 10.2875,
+        "end": 10.9
+      },
+      {
+        "text": "and",
+        "start": 11.05,
+        "end": 11.175
+      },
+      {
+        "text": "nothing",
+        "start": 11.1875,
+        "end": 11.525
+      },
+      {
+        "text": "moves.",
+        "start": 11.5375,
+        "end": 12.05
+      },
+      {
+        "text": "This",
+        "start": 12.9125,
+        "end": 13.2
+      },
+      {
+        "text": "creates",
+        "start": 13.2125,
+        "end": 13.5875
+      },
+      {
+        "text": "a",
+        "start": 13.6,
+        "end": 13.6625
+      },
+      {
+        "text": "clear",
+        "start": 13.675,
+        "end": 13.9875
+      },
+      {
+        "text": "review",
+        "start": 14.0,
+        "end": 14.3125
+      },
+      {
+        "text": "step",
+        "start": 14.325,
+        "end": 14.675
+      },
+      {
+        "text": "between",
+        "start": 14.6875,
+        "end": 15.0
+      },
+      {
+        "text": "a",
+        "start": 15.0125,
+        "end": 15.0625
+      },
+      {
+        "text": "recommendation",
+        "start": 15.075,
+        "end": 16.0125
+      },
+      {
+        "text": "and",
+        "start": 16.025,
+        "end": 16.15
+      },
+      {
+        "text": "a",
+        "start": 16.1625,
+        "end": 16.2125
+      },
+      {
+        "text": "live",
+        "start": 16.225,
+        "end": 16.5375
+      },
+      {
+        "text": "change.",
+        "start": 16.55,
+        "end": 17.125
+      }
+    ]
+  },
+  {
+    "id": "apply",
+    "audioDuration": 19.008,
+    "frames": 612,
+    "words": [
+      {
+        "text": "Preview",
+        "start": 0.1,
+        "end": 0.525
+      },
+      {
+        "text": "again,",
+        "start": 0.5375,
+        "end": 0.9375
+      },
+      {
+        "text": "and",
+        "start": 1.1125,
+        "end": 1.225
+      },
+      {
+        "text": "accept",
+        "start": 1.2375,
+        "end": 1.6375
+      },
+      {
+        "text": "the",
+        "start": 1.65,
+        "end": 1.7375
+      },
+      {
+        "text": "plan.",
+        "start": 1.75,
+        "end": 2.2375
+      },
+      {
+        "text": "Email",
+        "start": 3.1125,
+        "end": 3.5875
+      },
+      {
+        "text": "API",
+        "start": 3.6,
+        "end": 4.1
+      },
+      {
+        "text": "moves",
+        "start": 4.1125,
+        "end": 4.4125
+      },
+      {
+        "text": "into",
+        "start": 4.425,
+        "end": 4.6125
+      },
+      {
+        "text": "Now,",
+        "start": 4.625,
+        "end": 4.9375
+      },
+      {
+        "text": "analytics",
+        "start": 5.2625,
+        "end": 5.8625
+      },
+      {
+        "text": "moves",
+        "start": 5.875,
+        "end": 6.175
+      },
+      {
+        "text": "to",
+        "start": 6.1875,
+        "end": 6.2875
+      },
+      {
+        "text": "Later,",
+        "start": 6.3,
+        "end": 6.6875
+      },
+      {
+        "text": "and",
+        "start": 7.0375,
+        "end": 7.15
+      },
+      {
+        "text": "mobile",
+        "start": 7.1625,
+        "end": 7.5125
+      },
+      {
+        "text": "onboarding",
+        "start": 7.525,
+        "end": 8.075
+      },
+      {
+        "text": "joins",
+        "start": 8.0875,
+        "end": 8.4375
+      },
+      {
+        "text": "the",
+        "start": 8.45,
+        "end": 8.55
+      },
+      {
+        "text": "critical",
+        "start": 8.5625,
+        "end": 8.95
+      },
+      {
+        "text": "path.",
+        "start": 8.9625,
+        "end": 9.45
+      },
+      {
+        "text": "Each",
+        "start": 10.325,
+        "end": 10.625
+      },
+      {
+        "text": "move",
+        "start": 10.6375,
+        "end": 10.925
+      },
+      {
+        "text": "lands",
+        "start": 10.9375,
+        "end": 11.35
+      },
+      {
+        "text": "visibly.",
+        "start": 11.3625,
+        "end": 11.9625
+      },
+      {
+        "text": "The",
+        "start": 12.8375,
+        "end": 13.0125
+      },
+      {
+        "text": "plan",
+        "start": 13.025,
+        "end": 13.3625
+      },
+      {
+        "text": "now",
+        "start": 13.375,
+        "end": 13.55
+      },
+      {
+        "text": "uses",
+        "start": 13.5625,
+        "end": 13.9625
+      },
+      {
+        "text": "thirteen",
+        "start": 13.975,
+        "end": 14.4875
+      },
+      {
+        "text": "of",
+        "start": 14.5,
+        "end": 14.575
+      },
+      {
+        "text": "thirteen",
+        "start": 14.5875,
+        "end": 15.075
+      },
+      {
+        "text": "points,",
+        "start": 15.0875,
+        "end": 15.55
+      },
+      {
+        "text": "and",
+        "start": 15.825,
+        "end": 15.95
+      },
+      {
+        "text": "the",
+        "start": 15.9625,
+        "end": 16.05
+      },
+      {
+        "text": "focus",
+        "start": 16.0625,
+        "end": 16.4625
+      },
+      {
+        "text": "score",
+        "start": 16.475,
+        "end": 16.8
+      },
+      {
+        "text": "rises",
+        "start": 16.8125,
+        "end": 17.225
+      },
+      {
+        "text": "to",
+        "start": 17.2375,
+        "end": 17.3375
+      },
+      {
+        "text": "ninety",
+        "start": 17.35,
+        "end": 17.6875
+      },
+      {
+        "text": "two.",
+        "start": 17.7,
+        "end": 18.1125
+      }
+    ]
+  },
+  {
+    "id": "implementation",
+    "audioDuration": 21.144,
+    "frames": 676,
+    "words": [
+      {
+        "text": "PLOT",
+        "start": 0.1,
+        "end": 0.4375
+      },
+      {
+        "text": "registers",
+        "start": 0.45,
+        "end": 1.0125
+      },
+      {
+        "text": "seventeen",
+        "start": 1.025,
+        "end": 1.5625
+      },
+      {
+        "text": "tools",
+        "start": 1.575,
+        "end": 1.9625
+      },
+      {
+        "text": "directly",
+        "start": 1.975,
+        "end": 2.4375
+      },
+      {
+        "text": "in",
+        "start": 2.45,
+        "end": 2.55
+      },
+      {
+        "text": "the",
+        "start": 2.5625,
+        "end": 2.6375
+      },
+      {
+        "text": "page.",
+        "start": 2.65,
+        "end": 3.1875
+      },
+      {
+        "text": "Human",
+        "start": 4.05,
+        "end": 4.425
+      },
+      {
+        "text": "controls",
+        "start": 4.4375,
+        "end": 4.9625
+      },
+      {
+        "text": "and",
+        "start": 4.975,
+        "end": 5.0875
+      },
+      {
+        "text": "tool",
+        "start": 5.1,
+        "end": 5.375
+      },
+      {
+        "text": "calls",
+        "start": 5.3875,
+        "end": 5.7375
+      },
+      {
+        "text": "share",
+        "start": 5.75,
+        "end": 6.0125
+      },
+      {
+        "text": "typed",
+        "start": 6.025,
+        "end": 6.3875
+      },
+      {
+        "text": "actions",
+        "start": 6.4,
+        "end": 6.9125
+      },
+      {
+        "text": "and",
+        "start": 6.925,
+        "end": 7.0625
+      },
+      {
+        "text": "validation.",
+        "start": 7.075,
+        "end": 7.875
+      },
+      {
+        "text": "The",
+        "start": 8.75,
+        "end": 8.925
+      },
+      {
+        "text": "planner",
+        "start": 8.9375,
+        "end": 9.35
+      },
+      {
+        "text": "is",
+        "start": 9.3625,
+        "end": 9.475
+      },
+      {
+        "text": "deterministic.",
+        "start": 9.4875,
+        "end": 10.475
+      },
+      {
+        "text": "Signed",
+        "start": 11.3375,
+        "end": 11.7375
+      },
+      {
+        "text": "in",
+        "start": 11.75,
+        "end": 11.85
+      },
+      {
+        "text": "workspaces",
+        "start": 11.8625,
+        "end": 12.55
+      },
+      {
+        "text": "add",
+        "start": 12.5625,
+        "end": 12.825
+      },
+      {
+        "text": "Supabase",
+        "start": 12.8375,
+        "end": 13.375
+      },
+      {
+        "text": "persistence",
+        "start": 13.3875,
+        "end": 14.05
+      },
+      {
+        "text": "and",
+        "start": 14.0625,
+        "end": 14.325
+      },
+      {
+        "text": "realtime",
+        "start": 14.3375,
+        "end": 14.825
+      },
+      {
+        "text": "collaboration.",
+        "start": 14.8375,
+        "end": 15.7375
+      },
+      {
+        "text": "Codex",
+        "start": 16.6125,
+        "end": 17.1125
+      },
+      {
+        "text": "helped",
+        "start": 17.125,
+        "end": 17.4375
+      },
+      {
+        "text": "build,",
+        "start": 17.45,
+        "end": 17.7875
+      },
+      {
+        "text": "refine,",
+        "start": 17.975,
+        "end": 18.4875
+      },
+      {
+        "text": "and",
+        "start": 18.675,
+        "end": 18.8125
+      },
+      {
+        "text": "test",
+        "start": 18.825,
+        "end": 19.2125
+      },
+      {
+        "text": "the",
+        "start": 19.225,
+        "end": 19.325
+      },
+      {
+        "text": "implementation.",
+        "start": 19.3375,
+        "end": 20.275
+      }
+    ]
+  },
+  {
+    "id": "outro",
+    "audioDuration": 9.864,
+    "frames": 338,
+    "words": [
+      {
+        "text": "That",
+        "start": 0.1,
+        "end": 0.4
+      },
+      {
+        "text": "is",
+        "start": 0.4125,
+        "end": 0.525
+      },
+      {
+        "text": "PLOT.",
+        "start": 0.5375,
+        "end": 1.0625
+      },
+      {
+        "text": "Agents",
+        "start": 1.925,
+        "end": 2.3875
+      },
+      {
+        "text": "bring",
+        "start": 2.4,
+        "end": 2.65
+      },
+      {
+        "text": "structured",
+        "start": 2.6625,
+        "end": 3.2125
+      },
+      {
+        "text": "help",
+        "start": 3.225,
+        "end": 3.4875
+      },
+      {
+        "text": "into",
+        "start": 3.5,
+        "end": 3.675
+      },
+      {
+        "text": "the",
+        "start": 3.6875,
+        "end": 3.8
+      },
+      {
+        "text": "team's",
+        "start": 3.8125,
+        "end": 4.2125
+      },
+      {
+        "text": "actual",
+        "start": 4.225,
+        "end": 4.6625
+      },
+      {
+        "text": "workspace,",
+        "start": 4.675,
+        "end": 5.3625
+      },
+      {
+        "text": "while",
+        "start": 5.6875,
+        "end": 5.8625
+      },
+      {
+        "text": "people",
+        "start": 5.875,
+        "end": 6.225
+      },
+      {
+        "text": "keep",
+        "start": 6.2375,
+        "end": 6.475
+      },
+      {
+        "text": "the",
+        "start": 6.4875,
+        "end": 6.5875
+      },
+      {
+        "text": "plan",
+        "start": 6.6,
+        "end": 6.925
+      },
+      {
+        "text": "visible",
+        "start": 6.9375,
+        "end": 7.4625
+      },
+      {
+        "text": "and",
+        "start": 7.475,
+        "end": 7.5625
+      },
+      {
+        "text": "the",
+        "start": 7.575,
+        "end": 7.6625
+      },
+      {
+        "text": "decisions",
+        "start": 7.675,
+        "end": 8.175
+      },
+      {
+        "text": "in",
+        "start": 8.1875,
+        "end": 8.25
+      },
+      {
+        "text": "their",
+        "start": 8.2625,
+        "end": 8.4
+      },
+      {
+        "text": "hands.",
+        "start": 8.4125,
+        "end": 8.9875
+      }
+    ]
+  }
+]

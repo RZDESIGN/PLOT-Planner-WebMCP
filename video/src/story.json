@@ -1,0 +1,71 @@
+[
+  {
+    "id": "intro",
+    "eyebrow": "PLOT / THE WEBMCP CHALLENGE",
+    "title": "Plan together.",
+    "accent": "People. Agents. One canvas.",
+    "narration": "Meet PLOT. A shared planning canvas where people and browser agents turn a messy backlog into a plan everyone can see, review, and shape together.",
+    "kind": "intro"
+  },
+  {
+    "id": "problem",
+    "eyebrow": "01 / THE PLANNING PROBLEM",
+    "title": "A busy board. A blocked goal.",
+    "accent": "Signup flow needs Email API. Email API is still in Next.",
+    "narration": "This sprint looks busy, but the plan is blocked. Signup flow needs Email API, which is still in Next. Meanwhile, five points of analytics work do not directly protect the activation goal.",
+    "kind": "demo",
+    "media": "problem.mp4"
+  },
+  {
+    "id": "observe",
+    "eyebrow": "02 / OBSERVE",
+    "title": "Give the agent the whole picture.",
+    "accent": "plot.get_board  →  plot.analyze_board",
+    "narration": "Web MCP exposes the board as structured tools. Read the cards, estimates, dependencies, and sprint goal, then analyze the plan. Sidekick makes those same issues visible to the human. The starting focus score is sixty nine.",
+    "kind": "demo",
+    "media": "observe.mp4"
+  },
+  {
+    "id": "shape",
+    "eyebrow": "03 / SHAPE",
+    "title": "Turn a customer signal into work.",
+    "accent": "plot.create_sticky_note  →  plot.convert_sticky_to_card",
+    "narration": "Planning starts before a task is ready. Capture a customer signal as a loose sticky note. When it has enough shape, move it into the sprint as a card. People can drag it; agents can call the same underlying actions.",
+    "kind": "demo",
+    "media": "shape.mp4"
+  },
+  {
+    "id": "propose",
+    "eyebrow": "04 / SUGGEST",
+    "title": "See the plan before it changes.",
+    "accent": "plot.propose_sprint  →  review  →  dismiss",
+    "narration": "Now preview a plan that protects the sprint goal. Ghost cards show what would move and why. The committed board is still unchanged. Dismiss the proposal, and nothing moves. This creates a clear review step between a recommendation and a live change.",
+    "kind": "demo",
+    "media": "propose.mp4"
+  },
+  {
+    "id": "apply",
+    "eyebrow": "05 / ACT",
+    "title": "Accept. Watch the work fall into place.",
+    "accent": "13 / 13 points  ·  Focus 69 → 92",
+    "narration": "Preview again, and accept the plan. Email API moves into Now, analytics moves to Later, and mobile onboarding joins the critical path. Each move lands visibly. The plan now uses thirteen of thirteen points, and the focus score rises to ninety two.",
+    "kind": "demo",
+    "media": "apply.mp4"
+  },
+  {
+    "id": "implementation",
+    "eyebrow": "06 / WHY WEBMCP",
+    "title": "One shared set of actions.",
+    "accent": "17 tools. Structured inputs. Visible results.",
+    "narration": "PLOT registers seventeen tools directly in the page. Human controls and tool calls share typed actions and validation. The planner is deterministic. Signed in workspaces add Supabase persistence and realtime collaboration. Codex helped build, refine, and test the implementation.",
+    "kind": "architecture"
+  },
+  {
+    "id": "outro",
+    "eyebrow": "PLOT / PLAN TOGETHER",
+    "title": "From advice to shared action.",
+    "accent": "Observe. Suggest. Act.",
+    "narration": "That is PLOT. Agents bring structured help into the team's actual workspace, while people keep the plan visible and the decisions in their hands.",
+    "kind": "outro"
+  }
+]
