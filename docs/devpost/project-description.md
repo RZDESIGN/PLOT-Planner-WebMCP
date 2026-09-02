@@ -53,7 +53,7 @@ WebMCP was new to me. I gained significant experience designing structured tools
 
 ## What's next
 
-The public Hostinger deployment is live and native WebMCP checks have passed on its HTTPS origin. Remaining release checks cover production authentication redirects and the final explicitly approved native apply operation. Further improvements would focus on richer planning context and feedback from real product teams.
+The public Hostinger deployment is live and native WebMCP checks have passed on its HTTPS origin. Hosted authentication redirects and the production configuration are synchronized. Further improvements would focus on richer planning context and feedback from real product teams. Additional testing can cover production magic-link delivery and native apply after approval of its specific proposed moves.
 
 ## Try it and test it
 
@@ -77,6 +77,6 @@ For collaboration, sign in by magic link, create a sprint, and invite an editor 
 
 Native discovery, reads, sticky creation/conversion, proposal and dismissal were verified on https://plotplanner.xyz/ in Codex's in-app browser. The proposed and dismissed plans left the structured live board unchanged. The final native apply check awaits explicit approval of the proposed card moves. Mutation recordings use the real local UI and its tool-handler test bridge, as labeled in the film; that recorded apply flow reaches 13/13 points and focus 92. The film does not stage a multi-user session.
 
-The public app loads over HTTPS and its served bundle contains the proposal fix. Hosted Supabase Auth redirect settings and the end-to-end production magic-link flow still await dashboard access. The remote database is healthy, all 11 migrations match the repository and all 11 application tables have RLS enabled.
+The public app loads over HTTPS and its served bundle contains the proposal fix. Hosted Supabase Auth redirect settings have been synchronized and verified through the official CLI. End-to-end production magic-link email delivery has not been tested; the anonymous judge flow requires no login. The remote database is healthy, all 11 migrations match the repository and all 11 application tables have RLS enabled.
 
 The proposal/apply boundary is explicit, but an authorized agent can call apply; the app does not independently verify that a person reviewed the proposal.

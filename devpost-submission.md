@@ -103,7 +103,7 @@ Open `http://localhost:5173`. The checked-in Supabase publishable key can load t
 
 https://plotplanner.xyz/
 
-The Hostinger deployment returned HTTP 200 over HTTPS on September 2, 2026 and loaded the anonymous activation sprint in a browser. Its served bundle includes the proposal-application fix, the canonical domain and the expected Supabase project. Native WebMCP checks also passed on the public origin. Hosted authentication URL settings still await dashboard access. See `docs/PRODUCTION_VERIFICATION.md` for the dated results and `docs/DEPLOYMENT.md` for configuration.
+The Hostinger deployment returned HTTP 200 over HTTPS on September 2, 2026 and loaded the anonymous activation sprint in a browser. Its served bundle includes the proposal-application fix, the canonical domain and the expected Supabase project. Native WebMCP checks also passed on the public origin. Hosted authentication URLs were synchronized through the existing Supabase CLI login and verified against the production override. See `docs/PRODUCTION_VERIFICATION.md` for the dated results and `docs/DEPLOYMENT.md` for configuration.
 
 ## Public Repository Link
 
@@ -150,10 +150,10 @@ Current cut:
 - [x] Current desktop, proposal, collaboration and mobile screenshots are committed.
 - [x] Final domain supplied: https://plotplanner.xyz/ (Hostinger).
 - [x] Verify the final HTTPS URL and anonymous guest board on the public Hostinger deployment.
-- [ ] Add the final origin to the Supabase Site URL and redirect allow-list.
+- [x] Configure and verify the Supabase Site URL and redirect allow-list for the canonical production origin.
 - [x] Verify real native WebMCP tool calls in Codex's in-app browser at the local origin: 17 tools discovered; board and analysis calls succeeded.
 - [x] Discover all 17 tools and execute native read, analysis, sticky/card, proposal and dismissal calls on the public origin.
-- [ ] Complete the native public apply test after explicit approval of the three proposed card moves.
+- [ ] Optional additional verification: complete native public apply after explicit approval of the three proposed card moves. Successful local apply evidence is already recorded separately.
 - [x] Publish the proposal-application fix and editable video source to the public repository: commit `c5b685c87ebd7da57ce23a075d98cb1551b2c821`, pushed to `main` and confirmed on the remote.
 - [x] Verify the served production bundle includes the proposal fix and correct production configuration.
 - [x] Publish the narrated public YouTube demo under three minutes, with English subtitles.
@@ -164,7 +164,7 @@ Current cut:
 
 ## Known Limitations
 
-- Hosted Supabase Site URL, redirect allow-list and end-to-end production magic-link login still await dashboard access. The project is healthy, all 11 migrations match and all 11 application tables have RLS enabled.
+- Hosted Supabase Auth URLs and the production configuration override have been synchronized and verified. End-to-end production magic-link delivery has not been tested. The anonymous judge flow needs no login; all 11 migrations match and all 11 application tables have RLS enabled.
 - Public native discovery, reads, sticky/card conversion, proposal and dismissal passed. The final native apply call was blocked before execution by browser approval review and awaits the participant's approval of its exact card moves. The narrated film and automated apply evidence use the real UI and page-level tool-handler bridge.
 - Anonymous visitors can explore the deterministic template, but persistent multi-user collaboration requires magic-link authentication.
 - The apply step is separate from the proposal step, but it is callable by an authorized agent; the application does not independently prove that a human has reviewed the proposal.

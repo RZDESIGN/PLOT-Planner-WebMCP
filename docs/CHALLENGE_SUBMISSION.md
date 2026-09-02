@@ -76,7 +76,7 @@ For a separate collaboration demonstration, sign in, create a sprint and invite 
 
 - [x] Publish the source under the MIT license at `https://github.com/RZDESIGN/PLOT-Planner-WebMCP`.
 - [x] Deploy the production build to https://plotplanner.xyz/; HTTPS returns 200 and the canvas loads.
-- [ ] Add the production URL to Supabase Auth redirect URLs.
+- [x] Set and verify the production Supabase Site URL and redirect allow-list through the official CLI.
 - [x] Discover all seventeen tools and invoke native WebMCP calls in Codex's in-app browser on the public origin.
 - [x] Run `npm run check` on the prepared submission commit.
 - [x] Re-run the Playwright desktop and mobile smoke flows.

@@ -155,8 +155,8 @@ max_indexes = 5
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-# Local development only. Production Auth should use https://plotplanner.xyz/;
-# see docs/DEPLOYMENT.md before changing hosted settings.
+# Local defaults. The matching remotes.production block below overrides these
+# values when synchronizing the hosted PLOT project; see docs/DEPLOYMENT.md.
 site_url = "http://localhost:5173/"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
@@ -413,3 +413,21 @@ enabled = true
 # declarative_schema_path = "./schemas"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
+
+# Hosted PLOT configuration. Preserve the hosted security settings when the
+# CLI merges this remote over the local development defaults.
+[remotes.production]
+project_id = "rarawrgxqbnmzcjhxyic"
+
+[remotes.production.auth]
+site_url = "https://plotplanner.xyz/"
+additional_redirect_urls = ["https://plotplanner.xyz/", "http://localhost:5173/", "http://127.0.0.1:5173/"]
+
+[remotes.production.auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[remotes.production.auth.email]
+enable_confirmations = true
+max_frequency = "1m0s"
+otp_length = 8

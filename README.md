@@ -186,7 +186,7 @@ Then update `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.loc
 
 All application tables have RLS enabled. Anonymous visitors can only read the seeded public template. Owners and editors can mutate a shared sprint; viewers can read it and receive the same Realtime updates but cannot write through the UI, WebMCP, REST, or RPC layer. A magic-link sign-in uses PKCE, persists the resulting session in the browser, and turns the explored board into the user's first private sprint. One-use invitation tokens are stored only as SHA-256 hashes, expire after seven days, and may optionally be locked to an email address.
 
-The production frontend is [plotplanner.xyz](https://plotplanner.xyz/). Its authentication Site URL and redirect allow-list must use that canonical HTTPS origin. The local Supabase configuration uses the Vite development origin, `http://localhost:5173/`; it is not a production configuration to push wholesale. See [the deployment guide](docs/DEPLOYMENT.md) for the exact settings and verification record.
+The production frontend is [plotplanner.xyz](https://plotplanner.xyz/). Its hosted authentication Site URL and redirect allow-list use that canonical HTTPS origin. The base Supabase configuration uses `http://localhost:5173/` for local development; `[remotes.production]` supplies the hosted URL and preserves the hosted security settings when syncing the PLOT project. See [the deployment guide](docs/DEPLOYMENT.md) for the exact command and verification record.
 
 ## Collaboration, live view, and sprints
 

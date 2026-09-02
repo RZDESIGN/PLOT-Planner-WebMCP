@@ -34,7 +34,7 @@
   },
   "submission": {
     "draft_file": "devpost-submission.md",
-    "status": "needs-work"
+    "status": "ready"
   },
-  "next_command": "prepare-submission"
+  "next_command": "submit-project"
 }

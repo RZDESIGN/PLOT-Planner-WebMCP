@@ -80,7 +80,15 @@ In the Supabase dashboard, open **Authentication → URL Configuration**:
 2. Add `https://plotplanner.xyz/` to **Redirect URLs**.
 3. Keep the local development redirect only if it is still needed.
 
-The checked-in `supabase/config.toml` configures local development at `http://localhost:5173/`. It does not update hosted Auth settings. Change only the hosted URL fields needed for this deployment and preserve other project settings.
+The base settings in `supabase/config.toml` configure local development at `http://localhost:5173/`. The `[remotes.production]` override selects the hosted PLOT project and sets its canonical HTTPS URL while preserving its TOTP and email-confirmation settings. The hosted redirect allow-list includes `https://plotplanner.xyz/`, `http://localhost:5173/` and `http://127.0.0.1:5173/`.
+
+The configuration was synchronized and verified with Supabase CLI 2.116.0. Run from the repository root, using the exact project reference so the production override is loaded:
+
+```bash
+supabase config push --project-ref rarawrgxqbnmzcjhxyic
+```
+
+This is a write command, not a dry run. Review the configuration and matching remote override before invoking it: an agent or noninteractive environment may apply changes without pausing for confirmation. During this deployment, running the CLI from the actual intended directory was necessary to select its configuration reliably.
 
 Magic-link login uses a one-time PKCE code and returns to the canonical frontend while preserving only the `board` and `invite` context. This step is required for collaboration outside localhost. Open the link in the same browser that requested it so the PKCE verifier is available.
 

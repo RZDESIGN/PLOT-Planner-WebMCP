@@ -35,9 +35,12 @@ Project: `rarawrgxqbnmzcjhxyic` (**PLOT**, `eu-west-1`), reported **ACTIVE_HEALT
 
 - All **11** remote migrations match the migration versions and names in `supabase/migrations/`.
 - All **11** application tables in the `public` schema have Row Level Security enabled.
-- The security advisor returned no database/RLS findings. It reported one Auth warning: leaked-password protection is disabled. PLOT's interface uses email magic links, not password login; no plan upgrade or unrelated authentication change was made.
-- Hosted Site URL, redirect allow-list and production magic-link flow: **pending dashboard access**. The existing CLI credential received HTTP 403 when reading Auth configuration; database access through the Supabase connector works.
-- Local `supabase/config.toml` now uses Vite's `http://localhost:5173/` origin, with a loopback redirect for `127.0.0.1:5173`. These are local development settings, not a replacement for the hosted project configuration.
+- The final security advisor returned no database/RLS findings. It reported one Auth warning: leaked-password protection is disabled. PLOT's interface uses email magic links, not password login; no plan upgrade was made.
+- Hosted Auth configuration was synchronized with the existing Supabase CLI login. **Site URL:** `https://plotplanner.xyz/`. **Redirect allow-list:** `https://plotplanner.xyz/`, `http://localhost:5173/`, `http://127.0.0.1:5173/`. A subsequent CLI comparison reported Auth, API, database and storage configuration up to date.
+- The original hosted TOTP enrollment/verification and email-confirmation settings are enabled. Email requests retain their original one-minute interval and eight-digit OTP setting. The final security advisor check has no MFA finding.
+- The earlier HTTP 403 came from Cloudflare rejecting a standalone HTTP client, not a missing Supabase account login. The official CLI could access and synchronize the configuration.
+- End-to-end production magic-link email delivery remains untested; the anonymous judge flow does not require authentication.
+- The base `supabase/config.toml` uses Vite's local origin. Its `[remotes.production]` override pins the hosted project, production URLs and existing hosted Auth protections. A CLI run from the repository root confirmed this override loads and matches the hosted configuration.
 
 The password-protection advisory is described in [Supabase's documentation](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Production URL configuration follows [Supabase's redirect guidance](https://supabase.com/docs/guides/auth/redirect-urls).
 
@@ -51,8 +54,7 @@ The password-protection advisory is described in [Supabase's documentation](http
 - YouTube Studio confirmed the updated description was saved after the public-origin checks; the obsolete DNS-pending sentence was removed.
 - The local app's **27 tests**, lint, TypeScript check and production build passed after the proposal fix and again during the final repository sync on September 2, 2026.
 
-## Remaining release checks
+## Submission and additional verification
 
-- Complete the native apply test after explicit participant approval of the proposed moves.
-- Verify and, where needed, correct the hosted Supabase authentication URLs.
-- Receive the participant's final confirmation before writing and submitting the Devpost entry.
+- The public anonymous judge flow, working app URL, narrated video and public MIT repository are available. Receive the participant's final confirmation before writing and submitting the Devpost entry.
+- Additional verification can complete the native apply test after approval of its proposed moves, and exercise production magic-link delivery. These results are not claimed by this record; the successful local apply evidence remains separately identified.
