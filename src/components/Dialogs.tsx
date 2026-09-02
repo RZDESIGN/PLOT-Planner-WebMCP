@@ -1,40 +1,33 @@
-import { useEffect, useId, useState, type FormEvent } from 'react'
-import { ArrowRight, Check, Cloud, LockKeyhole, Mail, Plus, StickyNote as StickyNoteIcon, X } from 'lucide-react'
+import { useId, useState, type FormEvent } from 'react'
+import { ArrowRight, Check, Cloud, LayoutGrid, LockKeyhole, Mail, Pencil, Plus, StickyNote as StickyNoteIcon, X } from 'lucide-react'
 import type {
+  BoardCard,
   BoardColumn,
   BoardStickyNote,
   CardPriority,
   CreateCardInput,
   CreateStickyNoteInput,
   StickyColor,
+  UpdateCardInput,
   UpdateStickyNoteInput,
 } from '../types/domain'
-
-function useCloseOnEscape(open: boolean, onClose: () => void) {
-  useEffect(() => {
-    if (!open) return
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [onClose, open])
-}
+import { useModalDialog } from '../hooks/useModalDialog'
 
 interface AuthDialogProps {
   open: boolean
+  closing?: boolean
   onClose: () => void
   onSendLink: (email: string) => Promise<void>
 }
 
-export function AuthDialog({ open, onClose, onSendLink }: AuthDialogProps) {
+export function AuthDialog({ open, closing, onClose, onSendLink }: AuthDialogProps) {
   const titleId = useId()
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useCloseOnEscape(open, onClose)
+  const dialogRef = useModalDialog(open, onClose)
 
   if (!open) return null
 
@@ -53,7 +46,12 @@ export function AuthDialog({ open, onClose, onSendLink }: AuthDialogProps) {
   }
 
   return (
-    <div className="dialog-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      ref={dialogRef}
+      className={`dialog-backdrop${closing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
       <section className="dialog auth-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <button className="dialog-close" type="button" onClick={onClose} aria-label="Close sign in dialog"><X size={19} /></button>
         <div className="dialog-mark"><span>P</span><Cloud size={18} /></div>
@@ -100,6 +98,7 @@ export function AuthDialog({ open, onClose, onSendLink }: AuthDialogProps) {
 
 interface NewCardDialogProps {
   open: boolean
+  closing?: boolean
   columns: BoardColumn[]
   initialColumnId: string | null
   onClose: () => void
@@ -108,6 +107,7 @@ interface NewCardDialogProps {
 
 export function NewCardDialog({
   open,
+  closing,
   columns,
   initialColumnId,
   onClose,
@@ -122,7 +122,7 @@ export function NewCardDialog({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useCloseOnEscape(open, onClose)
+  const dialogRef = useModalDialog(open, onClose)
 
   if (!open) return null
 
@@ -151,9 +151,15 @@ export function NewCardDialog({
   }
 
   return (
-    <div className="dialog-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      ref={dialogRef}
+      className={`dialog-backdrop${closing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
       <section className="dialog card-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <button className="dialog-close" type="button" onClick={onClose} aria-label="Close new card dialog"><X size={19} /></button>
+        <div className="dialog-mark card-dialog__mark" aria-hidden="true"><LayoutGrid size={18} /></div>
         <p className="dialog-eyebrow">Shape the work</p>
         <h2 id={titleId}>Create a planning card</h2>
         <p>Give the team and the agent enough context to make a good planning decision later.</p>
@@ -197,6 +203,7 @@ export function NewCardDialog({
 
 interface StickyNoteDialogProps {
   open: boolean
+  closing?: boolean
   note?: BoardStickyNote | null
   position?: { x: number; y: number } | null
   onClose: () => void
@@ -214,6 +221,7 @@ const stickyColors: Array<{ value: StickyColor; label: string }> = [
 
 export function StickyNoteDialog({
   open,
+  closing,
   note,
   position,
   onClose,
@@ -226,7 +234,7 @@ export function StickyNoteDialog({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useCloseOnEscape(open, onClose)
+  const dialogRef = useModalDialog(open, onClose)
 
   if (!open) return null
 
@@ -254,7 +262,12 @@ export function StickyNoteDialog({
   }
 
   return (
-    <div className="dialog-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      ref={dialogRef}
+      className={`dialog-backdrop${closing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
       <section className="dialog sticky-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <button className="dialog-close" type="button" onClick={onClose} aria-label="Close sticky note dialog"><X size={19} /></button>
         <div className="dialog-mark sticky-dialog__mark"><StickyNoteIcon size={19} /></div>
@@ -292,6 +305,128 @@ export function StickyNoteDialog({
           {error && <p className="form-error" role="alert">{error}</p>}
           <button className="primary-button sticky-submit" type="submit" disabled={loading}>
             <StickyNoteIcon size={16} /> {loading ? 'Saving…' : note ? 'Save note' : 'Place sticky'}
+          </button>
+        </form>
+      </section>
+    </div>
+  )
+}
+
+interface EditCardDialogProps {
+  open: boolean
+  closing?: boolean
+  card: BoardCard | undefined
+  onClose: () => void
+  onUpdate: (cardId: string, input: UpdateCardInput) => Promise<unknown>
+}
+
+/**
+ * Cards could be changed by the agent through its tools but never by hand,
+ * which left the board read-only for the people using it.
+ */
+export function EditCardDialog({ open, closing, card, onClose, onUpdate }: EditCardDialogProps) {
+  const titleId = useId()
+  const [title, setTitle] = useState(card?.title ?? '')
+  const [description, setDescription] = useState(card?.description ?? '')
+  const [priority, setPriority] = useState<CardPriority>(card?.priority ?? 'medium')
+  const [estimate, setEstimate] = useState(card?.estimate ?? 2)
+  const [owner, setOwner] = useState(card?.owner_name ?? '')
+  const [labels, setLabels] = useState((card?.labels ?? []).join(', '))
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const dialogRef = useModalDialog(open, onClose)
+
+  if (!open || !card) return null
+
+  async function submit(event: FormEvent) {
+    event.preventDefault()
+    if (!card) return
+    setLoading(true)
+    setError('')
+    try {
+      await onUpdate(card.id, {
+        title: title.trim(),
+        description: description.trim(),
+        priority,
+        estimate,
+        ownerName: owner.trim() || null,
+        labels: labels
+          .split(',')
+          .map((label) => label.trim())
+          .filter(Boolean),
+      })
+      onClose()
+    } catch (nextError) {
+      setError(nextError instanceof Error ? nextError.message : 'The card could not be saved.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div
+      ref={dialogRef}
+      className={`dialog-backdrop${closing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
+      <section className="dialog card-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+        <button className="dialog-close" type="button" onClick={onClose} aria-label="Close edit card dialog"><X size={19} /></button>
+        <div className="dialog-mark card-dialog__mark" aria-hidden="true"><Pencil size={18} /></div>
+        <p className="dialog-eyebrow">Refine the work</p>
+        <h2 id={titleId}>Edit this card</h2>
+        <p>Sharpen the outcome, the size, or who is carrying it.</p>
+        <form onSubmit={submit}>
+          <label htmlFor="edit-card-title">Title</label>
+          <input
+            id="edit-card-title"
+            autoFocus
+            required
+            maxLength={160}
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+          <label htmlFor="edit-card-description">Description</label>
+          <textarea
+            id="edit-card-description"
+            rows={3}
+            maxLength={2000}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+          />
+          <div className="form-grid">
+            <label>
+              Priority
+              <select value={priority} onChange={(event) => setPriority(event.target.value as CardPriority)}>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </label>
+            <label>
+              Estimate
+              <select value={estimate} onChange={(event) => setEstimate(Number(event.target.value))}>
+                {[1, 2, 3, 5, 8, 13].map((value) => <option key={value} value={value}>{value} pts</option>)}
+              </select>
+            </label>
+            <label>
+              Owner
+              <input value={owner} maxLength={60} placeholder="Unassigned" onChange={(event) => setOwner(event.target.value)} />
+            </label>
+          </div>
+          <label htmlFor="edit-card-labels">Labels <small>comma separated</small></label>
+          <input
+            id="edit-card-labels"
+            value={labels}
+            maxLength={160}
+            placeholder="Activation, Core"
+            onChange={(event) => setLabels(event.target.value)}
+          />
+          {error && <p className="form-error" role="alert">{error}</p>}
+          <button className="primary-button card-submit" type="submit" disabled={loading}>
+            <Check size={16} /> {loading ? 'Saving…' : 'Save card'}
           </button>
         </form>
       </section>

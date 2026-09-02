@@ -9,13 +9,17 @@ import {
 } from 'lucide-react'
 import './App.css'
 import { BoardCanvas } from './components/BoardCanvas'
-import { AuthDialog, NewCardDialog, StickyNoteDialog } from './components/Dialogs'
+import { AuthDialog, EditCardDialog, NewCardDialog, StickyNoteDialog } from './components/Dialogs'
 import { SidekickPanel } from './components/SidekickPanel'
 import { Toast } from './components/Toast'
+import { useLatched, usePresence } from './hooks/usePresence'
 import { NewSprintDialog, ShareDialog, SprintSwitcher } from './components/WorkspaceControls'
 import { useBoard } from './hooks/useBoard'
 import { useWebMcp } from './hooks/useWebMcp'
 import { readPlotNavigation } from './lib/navigation'
+
+/** Matches the exit duration of `.dialog-backdrop.is-closing` in App.css. */
+const DIALOG_EXIT_MS = 150
 
 function userInitials(email?: string) {
   if (!email) return 'RD'
@@ -32,6 +36,7 @@ function App() {
   const [newSprintOpen, setNewSprintOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [newCardColumnId, setNewCardColumnId] = useState<string | null>(null)
+  const [editCardId, setEditCardId] = useState<string | null>(null)
   const [stickyDialog, setStickyDialog] = useState<{
     noteId?: string
     position?: { x: number; y: number }
@@ -72,13 +77,36 @@ function App() {
   }
   const webMcp = useWebMcp(toolApi)
   const isWorkspace = board.snapshot.source === 'supabase-workspace'
+  // A dialog's own state clears the moment it closes, so latch the last value
+  // and render from that while the exit animation plays.
+  const activeCardColumnId = useLatched(newCardColumnId)
+  const activeEditCardId = useLatched(editCardId)
+  const activeStickyDialog = useLatched(stickyDialog)
+
   const authDialogOpen = authOpen && board.authReady && !board.session?.user
+  // Surfaces stay mounted for the length of their exit so they animate out
+  // rather than vanishing. DIALOG_EXIT_MS must match the CSS exit duration.
+  const authPresence = usePresence(authDialogOpen, DIALOG_EXIT_MS)
+  const sprintPresence = usePresence(newSprintOpen, DIALOG_EXIT_MS)
+  const sharePresence = usePresence(shareOpen, DIALOG_EXIT_MS)
+  const cardPresence = usePresence(Boolean(newCardColumnId), DIALOG_EXIT_MS)
+  const editCardPresence = usePresence(Boolean(editCardId), DIALOG_EXIT_MS)
+  const stickyPresence = usePresence(Boolean(stickyDialog), DIALOG_EXIT_MS)
   const blockingOverlayOpen =
-    sidekickOpen || authDialogOpen || newSprintOpen || shareOpen || Boolean(newCardColumnId) || Boolean(stickyDialog)
+    sidekickOpen ||
+    authDialogOpen ||
+    newSprintOpen ||
+    shareOpen ||
+    Boolean(newCardColumnId) ||
+    Boolean(editCardId) ||
+    Boolean(stickyDialog)
 
   const closeSidekick = useCallback(() => {
     setSidekickOpen(false)
-    window.requestAnimationFrame(() => sidekickTriggerRef.current?.focus())
+    // Focus goes back on the next task rather than the next animation frame:
+    // a frame never arrives while the document is hidden, which would strand
+    // focus inside a panel that is no longer reachable.
+    setTimeout(() => sidekickTriggerRef.current?.focus(), 0)
   }, [])
 
   return (
@@ -171,6 +199,7 @@ function App() {
             onConvertStickyToCard={board.convertStickyToCard}
             onConvertCardToSticky={board.convertCardToSticky}
             onAddCard={setNewCardColumnId}
+            onEditCard={setEditCardId}
             onAddSticky={(position) => setStickyDialog({ position })}
             onEditSticky={(noteId) => setStickyDialog({ noteId })}
             onActionError={(error) => board.reportError(error, 'Board change was not saved')}
@@ -202,20 +231,27 @@ function App() {
       </main>
 
       {sidekickOpen && <button className="panel-backdrop" type="button" aria-label="Close PLOT Sidekick" onClick={closeSidekick} />}
-      {authDialogOpen && (
-        <AuthDialog open onClose={() => setAuthOpen(false)} onSendLink={board.sendMagicLink} />
+      {authPresence.mounted && (
+        <AuthDialog
+          open
+          closing={authPresence.closing}
+          onClose={() => setAuthOpen(false)}
+          onSendLink={board.sendMagicLink}
+        />
       )}
-      {newSprintOpen && (
+      {sprintPresence.mounted && (
         <NewSprintDialog
           open
+          closing={sprintPresence.closing}
           currentTitle={board.snapshot.board.title}
           onClose={() => setNewSprintOpen(false)}
           onCreate={board.createNewSprint}
         />
       )}
-      {shareOpen && (
+      {sharePresence.mounted && (
         <ShareDialog
           open
+          closing={sharePresence.closing}
           boardTitle={board.snapshot.board.title}
           boardUrl={board.boardUrl}
           collaborators={board.collaborators}
@@ -224,20 +260,31 @@ function App() {
           onInvite={board.inviteCollaborator}
         />
       )}
-      {newCardColumnId && (
+      {cardPresence.mounted && (
         <NewCardDialog
           open
+          closing={cardPresence.closing}
           columns={board.snapshot.columns}
-          initialColumnId={newCardColumnId}
+          initialColumnId={activeCardColumnId}
           onClose={() => setNewCardColumnId(null)}
           onCreate={board.createCard}
         />
       )}
-      {stickyDialog && (
+      {editCardPresence.mounted && (
+        <EditCardDialog
+          open
+          closing={editCardPresence.closing}
+          card={board.snapshot.cards.find((card) => card.id === activeEditCardId)}
+          onClose={() => setEditCardId(null)}
+          onUpdate={board.updateCard}
+        />
+      )}
+      {stickyPresence.mounted && (
         <StickyNoteDialog
           open
-          note={board.snapshot.stickyNotes.find((note) => note.id === stickyDialog.noteId)}
-          position={stickyDialog.position}
+          closing={stickyPresence.closing}
+          note={board.snapshot.stickyNotes.find((note) => note.id === activeStickyDialog?.noteId)}
+          position={activeStickyDialog?.position}
           onClose={() => setStickyDialog(null)}
           onCreate={board.createStickyNote}
           onUpdate={board.updateStickyNote}

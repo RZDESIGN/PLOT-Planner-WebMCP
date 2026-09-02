@@ -15,49 +15,222 @@
 }
 
 :root {
+  color-scheme: light;
   font-family: var(--font-sans);
-  color: #202124;
-  background: #f8f9fb;
+  color: var(--ink);
+  background: var(--canvas);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  view-transition-name: none;
+
+  /* ===== Typography ===================================================== */
   --font-sans: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
-  --ink: #202124;
-  --muted: #62666d;
-  --soft-muted: #969ba3;
-  --canvas: #f8f9fb;
-  --surface: #ffffff;
-  --white: #ffffff;
-  --line: #e5e7eb;
-  --line-dark: #d6d9df;
-  --lime: #c8f36a;
-  --pink: #ffb7c6;
-  --blue: #a9d3ff;
-  --amber: #ffe57f;
-  --violet: #d3c5ff;
-  --red: #ef6375;
-  --panel: #ffffff;
-  --panel-soft: #f6f7f9;
-  --text-micro: 11.5px;
-  --text-caption: 12.5px;
-  --text-small: 13.5px;
-  --text-body: 14.5px;
-  --text-ui: 14.5px;
-  --text-title: 16.5px;
+
+  --text-micro: 0.6875rem;  /* 11px — uppercase meta labels */
+  --text-caption: 0.75rem;  /* 12px — captions, chips */
+  --text-small: 0.8125rem;  /* 13px — secondary UI */
+  --text-body: 0.875rem;    /* 14px — body and controls */
+  --text-ui: 0.875rem;      /* 14px — alias for controls */
+  --text-title: 1rem;       /* 16px — card and section titles */
+  --text-heading: 1.25rem;  /* 20px — board and dialog headings */
+  --text-display: 1.5rem;   /* 24px — dialog display */
+
+  --fw-normal: 420;
+  --fw-medium: 520;
+  --fw-strong: 600;
+  --fw-heavy: 680;
+
+  --tracking-tight: -0.022em;
+  --tracking-snug: -0.011em;
+  --tracking-wide: 0.06em;
+
+  --leading-tight: 1.22;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+
+  /* ===== Space, radius, elevation ====================================== */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --radius-control: 8px;
-  --radius-panel: 14px;
-  --motion-fast: 160ms;
-  --motion-medium: 320ms;
-  --motion-slow: 560ms;
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring-soft: cubic-bezier(0.2, 0.9, 0.24, 1.08);
-  view-transition-name: none;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+
+  --radius-xs: 5px;
+  --radius-sm: 7px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 999px;
+  --radius-control: var(--radius-md);
+  --radius-panel: var(--radius-xl);
+
+  --shadow-rgb: 28 31 38;
+  --shadow-1: 0 1px 2px rgb(var(--shadow-rgb) / 0.06);
+  --shadow-2: 0 1px 2px rgb(var(--shadow-rgb) / 0.05), 0 3px 8px rgb(var(--shadow-rgb) / 0.06);
+  --shadow-3: 0 2px 4px rgb(var(--shadow-rgb) / 0.04), 0 8px 20px rgb(var(--shadow-rgb) / 0.09);
+  --shadow-4: 0 4px 10px rgb(var(--shadow-rgb) / 0.05), 0 16px 38px rgb(var(--shadow-rgb) / 0.12);
+  --shadow-5: 0 8px 18px rgb(var(--shadow-rgb) / 0.06), 0 30px 70px rgb(var(--shadow-rgb) / 0.16);
+
+  /* ===== Motion ========================================================
+     Eight durations and five curves cover the whole product. Pick the
+     duration by how far a thing travels and the curve by what it is doing:
+     arriving, leaving, responding to a pointer, or settling into place. */
+  --dur-0: 60ms;    /* press feedback */
+  --dur-1: 100ms;   /* icon and micro-state swaps */
+  --dur-2: 150ms;   /* hover, colour, border */
+  --dur-3: 210ms;   /* control transforms */
+  --dur-4: 280ms;   /* panels, dialogs, layout shifts */
+  --dur-5: 380ms;   /* large surfaces, meter fills */
+  --dur-6: 520ms;   /* choreographed sequences */
+  --dur-7: 720ms;   /* agent set pieces */
+
+  /* Crisp departure, long settle. The default for anything a pointer drives. */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* Expo out. For things arriving on screen. */
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Accelerating. For things leaving, which should not linger. */
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  /* Soft overshoot for weight and springiness. */
+  --ease-spring: cubic-bezier(0.2, 0.9, 0.24, 1.08);
+  /* Firmer overshoot for release-from-press. */
+  --ease-spring-firm: cubic-bezier(0.34, 1.4, 0.5, 1);
+
+  --motion-fast: var(--dur-2);
+  --motion-medium: var(--dur-4);
+  --motion-slow: var(--dur-6);
+  --ease-out-expo: var(--ease-entrance);
+  --ease-spring-soft: var(--ease-spring);
+
+  /* ===== Palette ======================================================= */
+  /* Generated on a single OKLCH ladder: one lightness per step across every
+     family, with chroma weighted by hue so warm and cool tints read as
+     equally colourful. Never add a raw hex outside this block. */
+  /* Neutral ramp. grey-600 is pinned dark enough to clear 4.5:1 as text on
+     every card surface, not only on the canvas; tests/palette.test.ts
+     enforces that and the family symmetry below. */
+  --grey-0: #ffffff;
+  --grey-25: #fbfcfe;
+  --grey-50: #f7f8fa;
+  --grey-100: #f2f3f5;
+  --grey-150: #ecedef;
+  --grey-200: #e5e7eb;
+  --grey-250: #dddfe3;
+  --grey-300: #ced0d4;
+  --grey-400: #a9abaf;
+  --grey-500: #83868c;
+  --grey-600: #5b5e63;
+  --grey-700: #404248;
+  --grey-800: #23252a;
+  --grey-900: #16181d;
+
+  /* rose */
+  --rose-wash: #fef1f2;
+  --rose-tint: #fee6e8;
+  --rose-surface: #fdd1d5;
+  --rose-edge: #fab8bf;
+  --rose-soft: #ee808f;
+  --rose-accent: #d34c66;
+  --rose-deep: #a32745;
+  --rose-ink: #74142d;
+
+  /* lime */
+  --lime-wash: #eff8e6;
+  --lime-tint: #e3f3d5;
+  --lime-surface: #cee9b4;
+  --lime-edge: #b4db8c;
+  --lime-soft: #7fbb23;
+  --lime-accent: #629319;
+  --lime-deep: #466a0f;
+  --lime-ink: #2f4907;
+
+  /* violet */
+  --violet-wash: #f5f3fe;
+  --violet-tint: #eeeafe;
+  --violet-surface: #e0d8fd;
+  --violet-edge: #cfc3fa;
+  --violet-soft: #ac94f0;
+  --violet-accent: #8b68d9;
+  --violet-deep: #6645ab;
+  --violet-ink: #472c7a;
+
+  /* gold */
+  --gold-wash: #faf5e0;
+  --gold-tint: #f6edca;
+  --gold-surface: #eedfa1;
+  --gold-edge: #e4cc6a;
+  --gold-soft: #c0a523;
+  --gold-accent: #978119;
+  --gold-deep: #6d5d0f;
+  --gold-ink: #4b3f07;
+
+  /* blue */
+  --blue-wash: #eff5fe;
+  --blue-tint: #e3eefe;
+  --blue-surface: #cce0fd;
+  --blue-edge: #afcefc;
+  --blue-soft: #6fa7fa;
+  --blue-accent: #337eea;
+  --blue-deep: #0e59b9;
+  --blue-ink: #073c82;
+
+  /* indigo */
+  --indigo-wash: #f2f4fe;
+  --indigo-tint: #e8ecfe;
+  --indigo-surface: #d6dcfd;
+  --indigo-edge: #c0c8fc;
+  --indigo-soft: #939cf9;
+  --indigo-accent: #6d72e4;
+  --indigo-deep: #4c4db5;
+  --indigo-ink: #333382;
+
+  /* ===== Semantic aliases ============================================== */
+  --ink: var(--grey-800);
+  --ink-strong: var(--grey-900);
+  --muted: var(--grey-600);
+  --soft-muted: var(--grey-500);
+  --faint: var(--grey-400);
+
+  --canvas: var(--grey-50);
+  --surface: var(--grey-0);
+  --white: #ffffff;
+  --panel: var(--grey-0);
+  --panel-soft: var(--grey-50);
+  --panel-sunken: var(--grey-100);
+
+  --line: var(--grey-200);
+  --line-strong: var(--grey-250);
+  --line-dark: var(--grey-300);
+
+  --brand-wash: var(--lime-wash);
+  --brand-tint: var(--lime-tint);
+  --brand-surface: var(--lime-surface);
+  --brand-edge: var(--lime-edge);
+  --brand-soft: var(--lime-soft);
+  --brand-accent: var(--lime-accent);
+  --brand-deep: var(--lime-deep);
+  --brand-ink: var(--lime-ink);
+
+  --danger-tint: var(--rose-tint);
+  --danger-surface: var(--rose-surface);
+  --danger-edge: var(--rose-edge);
+  --danger-accent: var(--rose-accent);
+  --danger-ink: var(--rose-deep);
+
+  --info-tint: var(--blue-tint);
+  --info-edge: var(--blue-edge);
+  --info-accent: var(--blue-accent);
+  --info-ink: var(--blue-deep);
+
+  /* Drawn in the outline-offset gap, so it is read against the canvas or the
+     chrome behind an element, never against the element's own fill. The deeper
+     blue clears 6:1 there, where the lighter accent only managed 3.7:1. */
+  --focus-ring: var(--blue-deep);
+  --lime: var(--lime-edge);
 }
 
 * {
@@ -75,8 +248,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow: hidden;
-  font-weight: 450;
-  line-height: 1.4;
+  font-size: var(--text-body);
+  font-weight: var(--fw-normal);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
 }
 
 button,
@@ -84,6 +259,7 @@ input,
 textarea,
 select {
   font: inherit;
+  letter-spacing: inherit;
 }
 
 button,
@@ -101,20 +277,58 @@ button:not(:disabled) {
 
 button:disabled {
   cursor: wait;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 a {
   color: inherit;
 }
 
-::selection {
-  color: #202124;
-  background: var(--lime);
+svg {
+  flex: 0 0 auto;
 }
 
+/* Panels and menus scroll inside a light, rounded chrome; a default platform
+   scrollbar lands on them as a heavy grey slab. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--grey-300) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: var(--radius-full);
+  background: var(--grey-300);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--grey-400);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::selection {
+  color: var(--brand-ink);
+  background: var(--brand-edge);
+}
+
+/* The offset gap does the separating, so focus stays legible on white chrome
+   and on tinted cards without overriding an element's own elevation. */
 :focus-visible {
-  outline: 3px solid rgba(91, 112, 230, 0.3);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

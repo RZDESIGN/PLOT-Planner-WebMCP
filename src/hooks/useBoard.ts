@@ -78,6 +78,7 @@ type ConnectionState = 'connecting' | 'live' | 'offline'
 const idleMotion: AgentMotion = {
   phase: 'idle',
   activeCardId: null,
+  activeNoteId: null,
   step: 0,
   total: 0,
   message: '',
@@ -131,6 +132,7 @@ export function useBoard() {
   const [proposal, setProposal] = useState<PlanningProposal | null>(null)
   const [activities, setActivities] = useState<ActivityItem[]>(initialActivities)
   const [toast, setToast] = useState<AppToast | null>(null)
+  const viewTransitionActiveRef = useRef(false)
   const [agentMotion, setAgentMotion] = useState<AgentMotion>(idleMotion)
   const [recentAgentCardIds, setRecentAgentCardIds] = useState<Set<string>>(() => new Set())
   const [recentAgentStickyIds, setRecentAgentStickyIds] = useState<Set<string>>(() => new Set())
@@ -173,16 +175,34 @@ export function useBoard() {
   const transitionToSnapshot = useCallback(
     async (next: BoardSnapshot) => {
       const transitionDocument = document as Document & {
-        startViewTransition?: (update: () => void) => { finished: Promise<void> }
+        startViewTransition?: (update: () => void) => {
+          ready: Promise<void>
+          updateCallbackDone: Promise<void>
+          finished: Promise<void>
+        }
       }
-      if (!transitionDocument.startViewTransition) {
+      // A view transition cannot run on a hidden document, and starting one
+      // while another is in flight aborts both. In either case commit directly
+      // rather than animating: the board state still lands, it just does not
+      // cross-fade.
+      if (
+        !transitionDocument.startViewTransition ||
+        document.visibilityState === 'hidden' ||
+        viewTransitionActiveRef.current
+      ) {
         commitSnapshot(next)
         return
       }
+      viewTransitionActiveRef.current = true
       const transition = transitionDocument.startViewTransition(() => {
         flushSync(() => commitSnapshot(next))
       })
+      // Every one of these promises rejects when a transition is aborted, and
+      // an uncaught rejection surfaces as a console error the user never caused.
+      transition.ready.catch(() => undefined)
+      transition.updateCallbackDone.catch(() => undefined)
       await transition.finished.catch(() => undefined)
+      viewTransitionActiveRef.current = false
     },
     [commitSnapshot],
   )
@@ -226,6 +246,18 @@ export function useBoard() {
   const showToast = useCallback((next: Omit<AppToast, 'id'>) => {
     setToast({ ...next, id: crypto.randomUUID() })
   }, [])
+
+  // Toasts had no lifetime, so an error banner stayed on screen until someone
+  // dismissed it by hand. Errors linger longer than confirmations because they
+  // carry something the reader may need to act on.
+  useEffect(() => {
+    if (!toast) return
+    const lifetime = toast.tone === 'error' ? 9000 : 6000
+    const timer = window.setTimeout(() => {
+      setToast((current) => (current?.id === toast.id ? null : current))
+    }, lifetime)
+    return () => window.clearTimeout(timer)
+  }, [toast])
 
   const reportError = useCallback(
     (error: unknown, title = 'Action could not be completed') => {
@@ -279,13 +311,22 @@ export function useBoard() {
     }
   }, [reportError])
 
+  const sessionRef = useRef<Session | null>(null)
+  const sessionUserId = session?.user?.id ?? null
+  // Effects run in declaration order, so this lands before the boot effect
+  // below reads it on the same commit.
+  useEffect(() => {
+    sessionRef.current = session
+  }, [session])
+
   useEffect(() => {
     if (!authReady) return
     let cancelled = false
     async function boot() {
+      const activeSession = sessionRef.current
       try {
         let next: BoardSnapshot
-        if (session?.user) {
+        if (activeSession?.user) {
           const navigation = readPlotNavigation(window.location.href)
           const invitationToken = navigation.invitationToken
           let invitedBoardId: string | null = null
@@ -304,10 +345,10 @@ export function useBoard() {
             }
           }
 
-          let accessible = await loadAccessibleSprints(session.user.id)
+          let accessible = await loadAccessibleSprints(activeSession.user.id)
           let selectedBoardId = invitedBoardId
           if (!selectedBoardId) {
-            const remembered = window.localStorage.getItem(`plot:active-sprint:${session.user.id}`)
+            const remembered = window.localStorage.getItem(`plot:active-sprint:${activeSession.user.id}`)
             selectedBoardId = accessible.some((item) => item.id === navigation.boardId)
               ? navigation.boardId
               : accessible.some((item) => item.id === remembered)
@@ -317,7 +358,7 @@ export function useBoard() {
 
           if (!selectedBoardId) {
             if (snapshotRef.current.source === 'offline-demo') {
-              next = await cloneSnapshotToWorkspace(snapshotRef.current, session.user)
+              next = await cloneSnapshotToWorkspace(snapshotRef.current, activeSession.user)
               selectedBoardId = next.board.id
             } else {
               selectedBoardId = await createSprintRepository({
@@ -329,7 +370,7 @@ export function useBoard() {
               })
               next = await loadBoard(selectedBoardId, 'supabase-workspace')
             }
-            accessible = await loadAccessibleSprints(session.user.id)
+            accessible = await loadAccessibleSprints(activeSession.user.id)
             showToast({
               title: 'Your workspace is ready',
               detail: 'The board you explored is now your first private, collaborative sprint.',
@@ -345,7 +386,7 @@ export function useBoard() {
           setSprints(accessible)
           setCollaborators(members)
           commitAccessRole(role)
-          window.localStorage.setItem(`plot:active-sprint:${session.user.id}`, selectedBoardId)
+          window.localStorage.setItem(`plot:active-sprint:${activeSession.user.id}`, selectedBoardId)
           syncActiveBoardUrl(selectedBoardId)
         } else {
           next = await loadPublicTemplate()
@@ -362,13 +403,21 @@ export function useBoard() {
         if (cancelled) return
         console.error('PLOT boot failed', error)
         commitSnapshot(cloneOfflineDemo())
-        commitAccessRole('guest')
+        if (!sessionRef.current?.user) commitAccessRole('guest')
         setConnection('offline')
-        showToast({
-          title: 'Offline demo loaded',
-          detail: 'PLOT could not reach Supabase, so your changes stay in this browser session.',
-          tone: 'info',
-        })
+        showToast(
+          sessionRef.current?.user
+            ? {
+                title: 'Sprint could not be loaded',
+                detail: 'You are still signed in. PLOT is showing a local demo until it reconnects.',
+                tone: 'error',
+              }
+            : {
+                title: 'Offline demo loaded',
+                detail: 'PLOT could not reach Supabase, so your changes stay in this browser session.',
+                tone: 'info',
+              },
+        )
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -378,7 +427,7 @@ export function useBoard() {
     return () => {
       cancelled = true
     }
-  }, [authReady, commitAccessRole, commitSnapshot, reportError, session, showToast])
+  }, [authReady, commitAccessRole, commitSnapshot, reportError, sessionUserId, showToast])
 
   useEffect(() => {
     if (snapshot.source === 'offline-demo') return
@@ -466,6 +515,7 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: card.id,
+          activeNoteId: null,
           step: 1,
           total: 1,
           message: `Moving ${card.title}`,
@@ -474,7 +524,7 @@ export function useBoard() {
         await transitionToSnapshot(next)
         scheduleAgentIdle(700)
       } else {
-        await transitionToSnapshot(next)
+        commitSnapshot(next)
       }
       if (session?.user && next.source === 'supabase-workspace') {
         try {
@@ -524,6 +574,7 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: card.id,
+          activeNoteId: null,
           step: 1,
           total: 1,
           message: `Writing ${card.title}`,
@@ -582,6 +633,7 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: updated.id,
+          activeNoteId: null,
           step: 1,
           total: 1,
           message: `Updating ${updated.title}`,
@@ -623,13 +675,15 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: null,
+          activeNoteId: note.id,
           step: 1,
           total: 1,
           message: 'Placing a canvas note',
         })
         markAgentStickies([note.id], 1700)
       }
-      await transitionToSnapshot(next)
+      if (input.agentGenerated) await transitionToSnapshot(next)
+      else commitSnapshot(next)
       if (input.agentGenerated) scheduleAgentIdle(850)
 
       if (session?.user && current.source === 'supabase-workspace') {
@@ -674,13 +728,15 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: null,
+          activeNoteId: updated.id,
           step: 1,
           total: 1,
           message: `Updating ${updated.content.split('\n')[0]}`,
         })
         markAgentStickies([updated.id])
       }
-      await transitionToSnapshot(next)
+      if (input.agentGenerated) await transitionToSnapshot(next)
+      else commitSnapshot(next)
       if (input.agentGenerated) scheduleAgentIdle(700)
 
       if (session?.user && current.source === 'supabase-workspace') {
@@ -823,13 +879,15 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: createdCard.id,
+          activeNoteId: null,
           step: 1,
           total: 1,
           message: `Turning ${firstLine} into sprint work`,
         })
         markAgentCards([createdCard.id], 1800)
       }
-      await transitionToSnapshot(next)
+      if (actor === 'agent') await transitionToSnapshot(next)
+      else commitSnapshot(next)
       if (actor === 'agent') scheduleAgentIdle(850)
 
       if (session?.user && previous.source === 'supabase-workspace') {
@@ -895,13 +953,15 @@ export function useBoard() {
         setAgentMotion({
           phase: 'editing',
           activeCardId: null,
+          activeNoteId: note.id,
           step: 1,
           total: 1,
           message: `Returning ${card.title} to loose thinking`,
         })
         markAgentStickies([note.id], 1800)
       }
-      await transitionToSnapshot(next)
+      if (actor === 'agent') await transitionToSnapshot(next)
+      else commitSnapshot(next)
       if (actor === 'agent') scheduleAgentIdle(850)
 
       if (session?.user && previous.source === 'supabase-workspace') {
@@ -996,6 +1056,7 @@ export function useBoard() {
     setAgentMotion({
       phase: 'proposing',
       activeCardId: nextProposal.actions[0]?.cardId || null,
+      activeNoteId: null,
       step: 1,
       total: nextProposal.actions.length,
       message: 'Sketching a reviewable plan',
@@ -1024,6 +1085,7 @@ export function useBoard() {
         setAgentMotion({
           phase: 'applying',
           activeCardId: action.cardId || null,
+          activeNoteId: null,
           step: index + 1,
           total: currentProposal.actions.length,
           message: `Applying ${action.cardTitle}`,

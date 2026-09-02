@@ -159,6 +159,8 @@ export interface UpdateStickyNoteInput {
 export interface AgentMotion {
   phase: 'idle' | 'proposing' | 'applying' | 'editing'
   activeCardId: string | null
+  /** Notes are agent targets too; the pointer travels to whichever is set. */
+  activeNoteId: string | null
   step: number
   total: number
   message: string

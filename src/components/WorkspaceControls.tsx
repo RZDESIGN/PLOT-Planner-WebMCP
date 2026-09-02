@@ -13,6 +13,8 @@ import {
   Users,
   X,
 } from 'lucide-react'
+import { useModalDialog } from '../hooks/useModalDialog'
+import { usePresence } from '../hooks/usePresence'
 import type {
   BoardInvitationLink,
   Collaborator,
@@ -20,6 +22,9 @@ import type {
   CreateSprintInput,
   SprintSummary,
 } from '../types/domain'
+
+/** Matches the exit duration of `.sprint-menu.is-closing` in App.css. */
+const MENU_EXIT_MS = 100
 
 function initials(name: string) {
   return name
@@ -75,6 +80,8 @@ export function SprintSwitcher({
     }
   }, [open])
 
+  const menuPresence = usePresence(open, MENU_EXIT_MS)
+
   return (
     <div className={`sprint-switcher${open ? ' is-open' : ''}`} ref={rootRef}>
       <button
@@ -88,8 +95,12 @@ export function SprintSwitcher({
         <strong>{activeTitle}</strong>
         <ChevronDown size={14} />
       </button>
-      {open && (
-        <div className="sprint-menu" role="menu" aria-label="Switch sprint">
+      {menuPresence.mounted && (
+        <div
+          className={`sprint-menu${menuPresence.closing ? ' is-closing' : ''}`}
+          role="menu"
+          aria-label="Switch sprint"
+        >
           <div className="sprint-menu__header">
             <span>Your sprints</span>
             <small>{sprints.length || 1} total</small>
@@ -131,11 +142,12 @@ export function SprintSwitcher({
 interface NewSprintDialogProps {
   currentTitle: string
   open: boolean
+  closing?: boolean
   onClose: () => void
   onCreate: (input: CreateSprintInput) => Promise<unknown>
 }
 
-export function NewSprintDialog({ currentTitle, open, onClose, onCreate }: NewSprintDialogProps) {
+export function NewSprintDialog({ currentTitle, open, closing, onClose, onCreate }: NewSprintDialogProps) {
   const titleId = useId()
   const [title, setTitle] = useState('')
   const [goal, setGoal] = useState('')
@@ -146,12 +158,7 @@ export function NewSprintDialog({ currentTitle, open, onClose, onCreate }: NewSp
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!open) return
-    function escape(event: KeyboardEvent) { if (event.key === 'Escape') onClose() }
-    window.addEventListener('keydown', escape)
-    return () => window.removeEventListener('keydown', escape)
-  }, [onClose, open])
+  const dialogRef = useModalDialog(open, onClose)
 
   if (!open) return null
 
@@ -170,7 +177,12 @@ export function NewSprintDialog({ currentTitle, open, onClose, onCreate }: NewSp
   }
 
   return (
-    <div className="dialog-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      ref={dialogRef}
+      className={`dialog-backdrop${closing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
       <section className="dialog sprint-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <button className="dialog-close" type="button" onClick={onClose} aria-label="Close new sprint dialog"><X size={19} /></button>
         <div className="dialog-mark sprint-dialog__mark"><CalendarDays size={19} /></div>
@@ -208,6 +220,7 @@ export function NewSprintDialog({ currentTitle, open, onClose, onCreate }: NewSp
 
 interface ShareDialogProps {
   open: boolean
+  closing?: boolean
   boardTitle: string
   boardUrl: string
   collaborators: Collaborator[]
@@ -216,7 +229,7 @@ interface ShareDialogProps {
   onInvite: (input: CreateInvitationInput) => Promise<BoardInvitationLink & { url: string }>
 }
 
-export function ShareDialog({ open, boardTitle, boardUrl, collaborators, canInvite, onClose, onInvite }: ShareDialogProps) {
+export function ShareDialog({ open, closing, boardTitle, boardUrl, collaborators, canInvite, onClose, onInvite }: ShareDialogProps) {
   const titleId = useId()
   const [role, setRole] = useState<'editor' | 'viewer'>('editor')
   const [email, setEmail] = useState('')
@@ -226,12 +239,7 @@ export function ShareDialog({ open, boardTitle, boardUrl, collaborators, canInvi
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!open) return
-    function escape(event: KeyboardEvent) { if (event.key === 'Escape') onClose() }
-    window.addEventListener('keydown', escape)
-    return () => window.removeEventListener('keydown', escape)
-  }, [onClose, open])
+  const dialogRef = useModalDialog(open, onClose)
 
   if (!open) return null
 
@@ -251,7 +259,12 @@ export function ShareDialog({ open, boardTitle, boardUrl, collaborators, canInvi
   }
 
   return (
-    <div className="dialog-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      ref={dialogRef}
+      className={`dialog-backdrop${closing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+    >
       <section className="dialog share-dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <button className="dialog-close" type="button" onClick={onClose} aria-label="Close sharing dialog"><X size={19} /></button>
         <div className="dialog-mark share-dialog__mark"><Users size={19} /></div>

@@ -149,7 +149,12 @@ export function SidekickPanel({
                   <strong>{analysis.focusScore}<small>/100</small></strong>
                   <b>{analysis.plannedPoints}/{analysis.capacity} pts</b>
                 </div>
-                <div className="focus-meter"><span style={{ width: `${analysis.focusScore}%` }} /></div>
+                <div
+                  className="focus-meter"
+                  data-band={analysis.focusScore >= 80 ? 'strong' : analysis.focusScore >= 50 ? 'fair' : 'low'}
+                >
+                  <span style={{ width: `${analysis.focusScore}%` }} />
+                </div>
               </section>
 
               <button

@@ -22,10 +22,12 @@ interface CanvasSpringOptions {
   initialVelocity?: Partial<CanvasVelocity>
 }
 
+// Damping ratio sits just under 1 (35 / 2*sqrt(320) = 0.98): the canvas arrives
+// fast and settles without a visible bounce.
 const DEFAULT_SPRING = {
-  stiffness: 230,
-  damping: 27,
-  maxDuration: 1100,
+  stiffness: 320,
+  damping: 35,
+  maxDuration: 700,
 } as const
 
 const ZERO_VELOCITY: CanvasVelocity = { x: 0, y: 0, zoom: 0 }
@@ -35,13 +37,16 @@ function nearlySettled(
   target: CanvasTransform,
   velocity: CanvasVelocity,
 ) {
+  // Thresholds sit below one device pixel of remaining travel, and below
+  // 0.07px per frame of remaining speed. Anything tighter spends frames
+  // animating motion nobody can see, which is what makes a spring feel draggy.
   return (
-    Math.abs(target.x - current.x) < 0.12 &&
-    Math.abs(target.y - current.y) < 0.12 &&
-    Math.abs(target.zoom - current.zoom) < 0.00015 &&
-    Math.abs(velocity.x) < 0.7 &&
-    Math.abs(velocity.y) < 0.7 &&
-    Math.abs(velocity.zoom) < 0.0008
+    Math.abs(target.x - current.x) < 0.4 &&
+    Math.abs(target.y - current.y) < 0.4 &&
+    Math.abs(target.zoom - current.zoom) < 0.0007 &&
+    Math.abs(velocity.x) < 4 &&
+    Math.abs(velocity.y) < 4 &&
+    Math.abs(velocity.zoom) < 0.005
   )
 }
 

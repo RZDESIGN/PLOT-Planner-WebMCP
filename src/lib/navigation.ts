@@ -1,6 +1,8 @@
 const NAVIGATION_PARAMETERS = ['board', 'invite'] as const
 const AUTH_QUERY_PARAMETERS = [
   'code',
+  'token',
+  'token_hash',
   'error',
   'error_code',
   'error_description',
@@ -15,6 +17,8 @@ export interface PlotNavigationState {
 
 export interface SupabaseAuthCallback {
   code: string | null
+  tokenHash: string | null
+  otpType: string | null
   accessToken: string | null
   refreshToken: string | null
   error: string | null
@@ -48,15 +52,21 @@ export function readSupabaseAuthCallback(href: string): SupabaseAuthCallback {
     hashParameters.get('error_description') ||
     hashParameters.get('error')
   const code = url.searchParams.get('code')
+  // Email templates built on {{ .TokenHash }} land here instead of on a PKCE
+  // code. Without this the link looks like it did nothing: no session, no error.
+  const tokenHash = url.searchParams.get('token_hash') || url.searchParams.get('token')
+  const otpType = url.searchParams.get('type') || hashParameters.get('type')
   const accessToken = hashParameters.get('access_token')
   const refreshToken = hashParameters.get('refresh_token')
 
   return {
     code,
+    tokenHash,
+    otpType,
     accessToken,
     refreshToken,
     error,
-    isCallback: Boolean(code || accessToken || refreshToken || error),
+    isCallback: Boolean(code || tokenHash || accessToken || refreshToken || error),
   }
 }
 

@@ -47,6 +47,29 @@ test('PKCE and legacy implicit callbacks are detected and safely removed', () =>
   )
 })
 
+test('token-hash magic links are detected and stripped like any other callback', () => {
+  const href =
+    'https://plot.example.com/?board=board-1&token_hash=pkce-free-hash&type=magiclink'
+  const callback = readSupabaseAuthCallback(href)
+  assert.equal(callback.tokenHash, 'pkce-free-hash')
+  assert.equal(callback.otpType, 'magiclink')
+  assert.equal(callback.code, null)
+  assert.equal(callback.isCallback, true)
+  assert.equal(cleanAuthCallbackUrl(href), 'https://plot.example.com/?board=board-1')
+
+  // Older templates send the same thing as `token`.
+  const legacyNamed = readSupabaseAuthCallback(
+    'https://plot.example.com/?token=hash-value&type=recovery',
+  )
+  assert.equal(legacyNamed.tokenHash, 'hash-value')
+  assert.equal(legacyNamed.otpType, 'recovery')
+  assert.equal(legacyNamed.isCallback, true)
+
+  // A plain board URL must never look like a callback.
+  const plain = readSupabaseAuthCallback('https://plot.example.com/?board=board-1')
+  assert.equal(plain.isCallback, false)
+})
+
 test('callback cleanup and invitation acceptance preserve the stable board reference', () => {
   const callbackUrl = cleanAuthCallbackUrl(
     'https://plot.example.com/?board=board-1&invite=join&error=access_denied&error_description=Expired',

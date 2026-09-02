@@ -18,12 +18,38 @@ Vite reads these variables at build time:
 ```text
 VITE_SUPABASE_URL=https://rarawrgxqbnmzcjhxyic.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=<publishable key>
-VITE_PUBLIC_APP_URL=https://plot.example.com/
+VITE_PUBLIC_APP_URL=https://plotplanner.xyz/
 ```
 
 `VITE_PUBLIC_APP_URL` is the single canonical URL used in magic links, board permalinks, and invitations. Do not mix apex and `www` origins: browser session storage is origin-specific. The publishable key is safe to include in the client bundle. Never expose a Supabase `service_role` key or another secret through a `VITE_` variable.
 
 ## 3. Deploy to Hostinger
+
+### GitHub deployment
+
+Connect `RZDESIGN/PLOT-Planner-WebMCP` and use these build settings:
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | Vite |
+| Branch | `main` |
+| Node.js version | `24.x` |
+| Root directory | `./` |
+| Package manager | npm |
+| Install command, if shown | `npm ci` |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+
+Add all three environment variables from section 2 before deploying. Copy the
+publishable key from `.env.example`. This frontend does not need a start command
+or server entry file; Hostinger serves the generated static files. Changing a
+`VITE_` variable requires a new build.
+
+Click **Deploy** after saving the settings. Hostinger's [Node.js web app
+guide](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/)
+also covers GitHub imports and the Vite preset.
+
+### Manual static upload
 
 1. Build locally with `npm run check`.
 2. Upload the **contents** of `dist/` to the site's document root, normally `public_html/`.
@@ -48,8 +74,8 @@ An Apache `.htaccess` fallback, when Hostinger uses Apache, can be configured as
 
 In the Supabase dashboard, open **Authentication → URL Configuration**:
 
-1. Set **Site URL** to the exact `VITE_PUBLIC_APP_URL` HTTPS origin.
-2. Add that exact production URL to **Redirect URLs**.
+1. Set **Site URL** to `https://plotplanner.xyz/`, matching `VITE_PUBLIC_APP_URL`.
+2. Add `https://plotplanner.xyz/` to **Redirect URLs**.
 3. Keep the local development redirect only if it is still needed.
 
 Magic-link login uses a one-time PKCE code and returns to the canonical frontend while preserving only the `board` and `invite` context. This step is required for collaboration outside localhost. Open the link in the same browser that requested it so the PKCE verifier is available.

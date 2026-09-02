@@ -1,4 +1,4 @@
-import type { Session } from '@supabase/supabase-js'
+import type { EmailOtpType, Session } from '@supabase/supabase-js'
 import { cleanAuthCallbackUrl, readSupabaseAuthCallback } from './navigation'
 import { supabase } from './supabase'
 
@@ -9,13 +9,30 @@ export interface AuthInitializationResult {
 
 let initializationPromise: Promise<AuthInitializationResult> | null = null
 
+/**
+ * Supabase's callback errors are written for the developer: the verifier
+ * failure, for instance, ends with advice about Next.js and SvelteKit. Someone
+ * who just clicked a link in their inbox needs to know what to do instead.
+ */
 function callbackFailure(error: unknown) {
   const detail = error instanceof Error ? error.message : String(error)
-  return new Error(
-    detail
-      ? `This sign-in link could not be completed: ${detail}`
-      : 'This sign-in link is invalid or expired. Request a new magic link.',
-  )
+  const lowered = detail.toLowerCase()
+
+  if (lowered.includes('code verifier') || lowered.includes('code_verifier')) {
+    return new Error(
+      'Open the link in the same browser you requested it from. Sign-in links cannot be completed from a different browser, a private window, or an email app’s built-in viewer.',
+    )
+  }
+  if (lowered.includes('expired')) {
+    return new Error('This sign-in link has expired. Request a new one and open it within the hour.')
+  }
+  if (lowered.includes('already') || lowered.includes('used')) {
+    return new Error('This sign-in link was already used. Request a new one.')
+  }
+  if (!detail) {
+    return new Error('This sign-in link is invalid or expired. Request a new magic link.')
+  }
+  return new Error(`This sign-in link could not be completed: ${detail}`)
 }
 
 async function resolveInitialSession(
@@ -34,6 +51,19 @@ async function resolveInitialSession(
 
     if (callback.code) {
       const { data, error } = await supabase.auth.exchangeCodeForSession(callback.code)
+      if (error) throw error
+      return { session: data.session, callbackError: null }
+    }
+
+    // Templates that use {{ .TokenHash }} deliver ?token_hash=&type= instead of
+    // a PKCE code. Verifying it here is what turns that link into a session;
+    // without this branch the callback is not recognised at all and the visitor
+    // silently lands signed out.
+    if (callback.tokenHash) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        token_hash: callback.tokenHash,
+        type: (callback.otpType || 'magiclink') as EmailOtpType,
+      })
       if (error) throw error
       return { session: data.session, callbackError: null }
     }
